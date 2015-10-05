@@ -10,6 +10,6 @@ Use UDP protocal to diliver files(media) in byte stream.
 + Setup Multicast Server
 + Setup Multicast Client
 + Upload received files onto Hadoop Distributed File System
-No file distortion(can be checked by `md5sum`)
++ No file distortion(can be checked by `md5sum`)
 
 
