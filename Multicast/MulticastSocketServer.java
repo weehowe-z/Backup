@@ -37,5 +37,4 @@ public class MulticastSocketServer{
 		}
 		InputFile.close();
 	}
-
 }
