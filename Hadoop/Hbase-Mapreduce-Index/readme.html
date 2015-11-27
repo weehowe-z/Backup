@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello!</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="homework-3-使用mapreduce构建hbase索引">HomeWork 3 使用MapReduce构建Hbase索引</h1>
+
+<hr>
+
+
+
+<h2 id="使用说明">使用说明</h2>
+
+
+
+<h4 id="1-编译及运行">1. 编译及运行</h4>
+
+
+
+<pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-variable">$ </span>/javac -cp <span class="hljs-variable">$CLASSPATH</span> <span class="hljs-constant">HBaseIndex</span>.java
+<span class="hljs-variable">$ </span>/tar -cvf <span class="hljs-constant">HBaseIndex</span>.jar *.<span class="hljs-keyword">class</span>
+<span class="hljs-variable">$ </span>/hadoop jar <span class="hljs-constant">HBaseIndex</span>.jar <span class="hljs-constant">HBaseIndex</span> 
+    tableName indexName columnName</code></pre>
+
+<ul>
+<li><strong>tableName</strong> 原始输入表，会默认初始化填充数据</li>
+<li><strong>indexName</strong> 索引表</li>
+<li><strong>columnName</strong> 需要创建索引的列名，样例中仅支持 <code>name</code> <code>email</code> <code>id</code></li>
+<li>指定参数后，程序会自动检测是否已经存在该表，并删除重建！ </li>
+<li>初始化后，输入表的内容样式为：</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+  <th>Row</th>
+  <th align="center">Information:name</th>
+  <th align="right">Information:email</th>
+  <th align="right">Information:id</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>0</td>
+  <td align="center">alice</td>
+  <td align="right">alice@qq.com</td>
+  <td align="right">5132424123</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td align="center">bob</td>
+  <td align="right">bob@gmail.com</td>
+  <td align="right">123231243</td>
+</tr>
+</tbody></table>
+
+
+<p>如需修改，可以在代码中 <code>createTableData</code> 函数修改</p>
+
+
+
+<h4 id="2-查看结果">2. 查看结果</h4>
+
+<p>程序执行完后会自动打印创建的索引。 <br>
+或者使用 <code>hbase shell</code> 观察：</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-variable">$ </span>/hbase shell
+<span class="hljs-variable">$ </span>hbase(main)<span class="hljs-symbol">:</span><span class="hljs-number">001</span><span class="hljs-symbol">:</span><span class="hljs-number">0</span>&gt;  scan <span class="hljs-string">'IndexTableName'</span></code></pre>
+
+<hr>
+
+<p><em>© 2015  <a href="http://blog.delvin.xyz">weehowe-z</a></em> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>get source code on <a href="https://github.com/weehowe-z">Github</a></em></p></div></body>
+</html>
