@@ -1,5 +1,6 @@
 #include <iostream>
 #include <time.h>
+#include <stdlib.h>
 using namespace std;
 
 //Calculate on the kernel
@@ -11,11 +12,21 @@ __global__ void add(int* a, int* b, int* c)
 
 int main(int argc, char const *argv[])
 {
+	int blocks = 1, threads= 1;
+	if(argc == 3){
+		blocks = atoi(argv[1]);
+		threads = atoi(argv[2]);
+	}
+	cout<<"--------------------\n";
+	cout<<"Blocks: " << blocks <<endl;
+	cout<<"Threads: " << threads <<endl;
+	cout<<"----------"<<endl;
+
+
 	// clock_t begin, end;
 	clock_t gpu_begin, gpu_end;
 	// double time_spent;
 	double gpu_time_spent;
-
 
 
 	//host copy
@@ -29,7 +40,6 @@ int main(int argc, char const *argv[])
 
 	int size = sizeof(int);
 
-	cout<<"Begin to allocate GPU space\n";
 	gpu_begin = clock();
 
 	//allocate GPU space
@@ -41,7 +51,7 @@ int main(int argc, char const *argv[])
 	cudaMemcpy(d_a, &a, size, cudaMemcpyHostToDevice);
 	cudaMemcpy(d_b, &b, size, cudaMemcpyHostToDevice);
 
-	add<<<1,1>>>(d_a, d_b, d_c);
+	add<<<blocks,threads>>>(d_a, d_b, d_c);
 
 	cudaMemcpy(&c, d_c, size, cudaMemcpyDeviceToHost);
 
@@ -59,6 +69,7 @@ int main(int argc, char const *argv[])
 	//kernel
 	cout<<"c is "<<c<<endl;
 	cout<<"time_spent "<<gpu_time_spent<<"s"<<endl;
+	cout<<"--------------------\n\n";
 
 	return 0;
 }
