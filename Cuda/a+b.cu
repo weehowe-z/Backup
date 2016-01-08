@@ -6,6 +6,7 @@ using namespace std;
 //Calculate on the kernel
 __global__ void add(int* a, int* b, int* c)
 {
+	int i = threadIdx.x;
 	*c = *a + *b;
 }
 

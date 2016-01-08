@@ -1,35 +1,38 @@
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
-#define N 8
 using namespace std;
 
 void random_ints(int* a, int num)
 {
 	for (int i = 0; i < num; ++i){
 		a[i] = rand() % 20;
-		cout<<a[i]<<"\t";
+		// cout<<a[i]<<"\t";
 	}
-	cout<<endl<<endl;
+	// cout<<endl<<endl;
 }
 
 
 //Calculate on the kernel
 __global__ void add(int* a, int* b, int* c)
 {
-	c[blockIdx.x] = a[blockIdx.x] + b[blockIdx.x];
+	int index = threadIdx.x + blockIdx.x * blockDim.x;
+	c[index] = a[index] + b[index];
 }
-
+	
 int main(int argc, char const *argv[])
 {
-	int blocks = 1, threads= 1;
+	int scale=10, blocks = 1, threads_per_block= 1;
 	if(argc == 3){
-		blocks = atoi(argv[1]); 
-		threads = atoi(argv[2]);
+		scale = atoi(argv[1]); 
+		threads_per_block = atoi(argv[2]);
 	}
+	blocks = ceil((double)scale/threads_per_block);
+
 	cout<<"--------------------\n";
-	cout<<"Blocks: " << blocks <<endl;
-	cout<<"Threads: " << threads <<endl;
+	cout<<"Scale:\t"<< scale << endl;
+	cout<<"Blocks:\t" << blocks << endl;
+	cout<<"threads per block:\t" << threads_per_block << endl;
 	cout<<"----------"<<endl;
 
 	srand(time(NULL));
@@ -46,17 +49,17 @@ int main(int argc, char const *argv[])
 	//device copy 
 	int *d_a,*d_b,*d_c;
 
-	int size = N * sizeof(int);
+	int size = scale * sizeof(int);
 
 	a = (int *)malloc(size);
 	b = (int *)malloc(size);
 	c = (int *)malloc(size);
 
-	for (int i=0; i<N; ++i){
-		c[i] = 0;
-	}
-	random_ints(a, N);
-	random_ints(b, N);
+	// for (int i=0; i<scale; ++i){
+	// 	c[i] = 0;
+	// }
+	random_ints(a, scale);
+	random_ints(b, scale);
 
 
 	//allocate GPU space
@@ -68,10 +71,10 @@ int main(int argc, char const *argv[])
 	//copy input to device
 	cudaMemcpy(d_a, a, size, cudaMemcpyHostToDevice);
 	cudaMemcpy(d_b, b, size, cudaMemcpyHostToDevice);
-	cudaMemcpy(d_c, c, size, cudaMemcpyHostToDevice);
+	// cudaMemcpy(d_c, c, size, cudaMemcpyHostToDevice);
 	gpu_begin = clock();
 
-	add<<<blocks,threads>>>(d_a, d_b, d_c);
+	add<<<blocks,threads_per_block>>>(d_a, d_b, d_c);
 
 	gpu_end = clock();
 	gpu_time_spent = (double)(gpu_end - gpu_begin)* 1000 / CLOCKS_PER_SEC;
@@ -84,10 +87,10 @@ int main(int argc, char const *argv[])
 	cudaFree(d_b);
 	cudaFree(d_c);
 
-	for (int i=0; i<N; ++i){
-		cout<< c[i]<<"\t";
-	}
-	cout<<endl<<endl<<endl;
+	// for (int i=0; i<scale; ++i){
+	// 	cout<< c[i]<<"\t";
+	// }
+	// cout<<endl<<endl<<endl;
 
 	//kernel
 	// cout<<"c is "<<c<<endl;

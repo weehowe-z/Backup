@@ -5,16 +5,12 @@
 #!/bin/bash
 # nvcc a+b.cu
  nvcc A+B.cu
-./a.out 1 1
-./a.out 2 1
-./a.out 3 1
-./a.out 4 1
-./a.out 5 1
-./a.out 6 1
-./a.out 7 1
-./a.out 8 1
-./a.out 9 3
-
+#     scale   threads per block
+./a.out 100000 1
+./a.out 100000 4
+./a.out 100000 20
+./a.out 200 30
+./a.out 20  9
 
 
 rm a.out
