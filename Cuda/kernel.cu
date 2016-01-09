@@ -109,8 +109,8 @@ __global__ void kmpKernel(int *c, int *lps, const char *a, const char *b, int si
 
 int main()
 {
-	ifstream fin("G://input.txt");
-	ofstream fout("G://out.txt");
+	ifstream fin("input.txt");
+	ofstream fout("out.txt");
 	//char *txt = new char[4000] ;
 	//char *txt = "AABAACAADAABAAABAA";
 	//char *pat = new char[1000];
