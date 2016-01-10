@@ -1,1 +1,11 @@
-Cuda/*.txt
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+*.txt
+testCase/*
+output/*
