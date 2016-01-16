@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello!</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="gltank"><strong>GLTank!</strong></h1>
+
+<ul>
+<li>朱文豪  </li>
+<li>5130309717</li>
+</ul>
+
+<hr>
+
+
+
+<h3 id="1-使用说明">1. 使用说明</h3>
+
+
+
+<h4 id="直接运行">直接运行</h4>
+
+
+
+<pre class="prettyprint"><code class=" hljs avrasm">./tank_game/GLTank<span class="hljs-preprocessor">.exe</span></code></pre>
+
+<p>操作 : </p>
+
+<pre><code>w - 向前移动
+a - 向左旋转
+s - 向后移动
+d - 向右旋转
+鼠标移动 - 改变炮口位置 
+鼠标左键单击 - 射击
+</code></pre>
+
+<p>游戏方式 :</p>
+
+<pre><code>击中敌方坦克三次即可消灭该单位，控制台会统计战况。
+</code></pre>
+
+
+
+<h4 id="编译并运行">编译并运行</h4>
+
+<p><strong>开发环境：</strong></p>
+
+<ul>
+<li>OS - Windows 10 Home</li>
+<li>IDE - Visual Studio 15 Community <br>
+
+
+<blockquote>
+  低版本的VS可能需要重新创建工程</blockquote></li>
+  </ul>
+  
+
+
+<h3 id="2-其他说明">2. 其他说明</h3>
+
+<ul>
+<li><p><code>glm.c/glm.h</code> 来自<a href="http://sourceforge.net/projects/ogl-math/">开源代码</a>，用于读取 <code>obj</code>文件</p></li>
+<li><p><code>tga.c/tga.h</code> 来自开源代码，用于读取 <code>tga</code>文件</p></li>
+<li><p>模型使用 Windows 10 自带工具 <strong>3D Builder</strong> 处理</p></li>
+</ul>
+
+<p><img src="http://7xpne1.com1.z0.glb.clouddn.com/opengl1.jpg" alt="enter image description here" title=""></p>
+
+
+
+<h3 id="3-特点">3. 特点</h3>
+
+<ul>
+<li>尝试采用模块化设计，降低耦合度</li>
+<li>光照，贴图，坐标变换等等均有涉及</li>
+</ul>
+
+
+
+<h3 id="4-后续计划">4. 后续计划</h3>
+
+<ul>
+<li>添加碰撞检测</li>
+</ul>
+
+<hr>
+
+<p>More on <a href="https://github.com/weehowe-z/homework-backup">Github</a>  <br>
+Copyright © <a href="http://blog.delvin.xyz">Delvin Zhu</a> 2016</p></div></body>
+</html>

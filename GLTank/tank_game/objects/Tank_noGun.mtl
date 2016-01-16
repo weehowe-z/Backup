@@ -1,0 +1,82 @@
+# Blender MTL File: 'Tank.blend'
+# Material Count: 9
+
+newmtl Material
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Ryan Novak\Desktop\tank game final work\glm and textures\SDL testing\skins\Camouflage.jpg
+
+newmtl None
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd C:\Users\Ryan Novak\Desktop\tank game final work\glm and textures\SDL testing\skins\tire.jpeg
+
+newmtl None_Camouflage.jpg
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd C:\Users\Ryan Novak\Desktop\tank game final work\glm and textures\SDL testing\skins\Camouflage.jpg
+
+newmtl None_Metal_Texture.jpeg.001
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd C:\Users\Ryan Novak\Desktop\tank game final work\glm and textures\SDL testing\skins\Metal Texture.jpeg
+
+newmtl None_NONE
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+
+newmtl None_Secondary
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+
+newmtl None_SpaceShipGunex.jpeg
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd C:\Users\Ryan Novak\Desktop\tank game final work\glm and textures\SDL testing\skins\SpaceShipGunex.jpeg
+
+newmtl None_tank_tracks.jpeg
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd C:\Users\Ryan Novak\Desktop\tank game final work\glm and textures\SDL testing\skins\tank_tracks.jpeg
+
+newmtl None_wood_handel.jpeg
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd C:\Users\Ryan Novak\Desktop\tank game final work\glm and textures\SDL testing\skins\wood_handel.jpeg
