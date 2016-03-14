@@ -1,0 +1,189 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs, euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage{multicol}
+
+\theoremstyle{definition}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}[section]
+\newtheorem*{solution}{Solution}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+%changing 1.5 will give you different space between lines.
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+
+
+\begin{document}
+
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab03-Recursive Function}}\vspace{1mm}\\
+CS363-Computability Theory, Xiaofeng Gao, Spring 2016}}
+\begin{center}
+
+\footnotesize{\color{blue} Name: Wenhao Zhu \quad StudentId: 5130309717 \quad Email: weehowe.z@gmail.com}
+\end{center}
+
+
+\begin{enumerate}
+
+\item Show that the following functions are primitive recursive:
+\begin{enumerate}
+  \item $half(n)=\left\{\begin{array}{ll}
+    \dfrac{n}{2}, & \mbox{if $n$ is even,} \\
+    \dfrac{n-1}{2}, & \mbox{if $n$ is odd.} \\
+  \end{array}\right.$
+  \item $\max \{x_1, x_2, \cdots, x_n \}$ = the maximum of $x_1$, $x_2$, $\cdots$, $x_n$.
+  \item $f(x)=$ the sum of all prime divisors of $x$.
+  \item $g(x)=x^x$.
+\end{enumerate}
+    \begin{solution}
+    \begin{enumerate}
+        \item $half(0) = 0$, $half(x+1) = half(x) + rm(2,x)$
+
+        \item $max(x,y) \backsimeq x \dot - (x \dot - y)$
+            $max\{x,y\} = max(x,y)$
+            
+            $\max \{x_1, x_2, \cdots, x_n \} = max( max\{x_1, x_2, \cdots, x_{n-1}\}, x_n)$
+        \item $f(x) = \sum_{z \leq x} Pr(div(z,x) \cdot z)$
+        
+        \item $g(x) = power(x,x)$
+
+    \end{enumerate}
+
+    \end{solution}
+
+
+  \item Show the computability of the following functions by minimalisation.
+    \begin{enumerate}
+    \item $f^{-1}(x)$, if $f(x)$ is a total injective computable function.
+    \item $f(a)=\left\{\begin{array}{l}
+                       \mbox{the least non-negative integral root of } p(x)-a\ (a\in \mathbb{N}),\\
+                       \mbox{undefined if there's no such root},
+                       \end{array}\right.$  \vspace{1mm}
+
+                       where $p(x)$ is a polynomial with integer coefficients.
+    \item $f(x,y)=\left\{\begin{array}{ll}
+        x/y & \mbox{if } y\neq 0 \mbox{ and } y|x,\\
+        \mbox{undefined} & \mbox{otherwise}.
+        \end{array}\right.$
+    \end{enumerate}
+
+\begin{solution}
+\begin{enumerate}
+    \item  $f^{-1}(y) = \mu z(f(z) = y)$
+    
+    \item $ f(y) = \mu z (z^2 = p(x)-y, (z\in \mathbb{N}) ) $
+    
+    \item $f(x,y) = \mu z (|mult(z,y) - x| = 0)$
+\end{enumerate}
+
+\end{solution}
+
+\item Let $\pi (x,y)=2^{x}(2y+1)-1$. Show that $\pi$ is a computable bijection from $\mathbb{N}^{2}$ to $\mathbb{N}$, and that the functions $\pi_{1}$, $\pi_{2}$ such that $\pi(\pi_{1}(z),\pi_{2}(z))=z$ for all $z$ are computable.
+    \begin{solution}
+    \textbf{Injective}. Given that $\pi (p,q) = \pi (x,y)$, then $2^{p}(2q+1) = 2^{x}(2y+1)$. If $p =0$ or $x = 0$, suppose $p=0$, then $2q+1$ is odd and $2^{x}(2y+1)$ must be odd, so $x=0$. If $p \neq 0$ and $x \neq 0$, then $2^p|2^x(2y+1)$, so $p = x$. Now that $p = x$, apparently $q = y$. It is injective.
+    
+    \textbf{Surjective}. n is arbitrary. let $2^x$ be the highest power of 2 dividing $n+1$. Then the quotient must be odd of the form $2y+1$. So $n = 2^x(2y+1) -1 = \pi(x,y)$. It is surjective.
+    
+    $\pi_1(n) = \mu z \leq (n+1) (2^z > n+1) - 1$ is computable. $\pi_2(n) = qt(2,qt(2^{\pi_1(n)} , n+1)-1)$ is also computable. It is easy to see that $\pi(\pi_{1}(n),\pi_{2}(n))=n$ are computable. 
+    
+    \end{solution}
+
+\item Show that the following function is primitive recursive (with the help of $\pi(x,y)$, perhaps):
+\begin{eqnarray*}
+  f(0) & = & 1, \\
+  f(1) & = & 1, \\
+  f(n+2) & = & f(n) + f(n+1).
+\end{eqnarray*}
+    \begin{solution}
+    Define $g(x)$ as below:
+    $$
+    g(0) = \pi (1,1)
+    $$
+    $$
+    g(x+1) = \pi( \pi_2 (g(x)), \pi_1(g(x)) + \pi_2(g(x)))
+    $$
+    Then $f(x) = \pi_1(g(x))$. Therefore, we can know $f(x)$ is primitive recursive.
+    \end{solution}
+  \item Coding Technology.
+
+  Any number $x \in \mathbb{N}$ has a unique expression as
+
+  (1) $x=\sum\limits_{i=0}^{\infty} \alpha_{i}2^{i},$ with $\alpha_{i}=0 \mbox{ or } 1,\mbox{ for all }i.$
+
+  Hence, if $x>0$, there are unique expressions for  $x$ in the forms
+
+  (2) $x=2^{b_{1}}+2^{b_{2}}+\ldots+2^{b_{l}},$ with $0\leq b_{1}<b_{2}<...<b_{l}$ and $l \geq 1$, and
+
+  (3) $x=2^{a_{1}}+2^{a_{1}+a_{2}+1}+\ldots+2^{a_{1}+a_{2}+\ldots+a_{k}+k-1}$. %{\color{blue}(a way to code sequence $(a_{1},a_{2},\ldots,a_{l})$)}
+  {\color{blue}(The expression (3) is a way of regarding $x$ as coding the sequence $(a_{1},a_{2},\ldots,a_{l})$ of numbers)}
+
+  Show that each of the functions $\alpha$, $l$, $b$, $a$ defined below is computable.
+    \begin{enumerate}
+    \item $\alpha(i,x)=\alpha_{i}$ as in the expression (1);
+    \item $l(x)=\left\{\begin{array}{ll}
+        l \mbox{ as in (2)}, & \mbox{if } x>0,\\
+        0& \mbox{otherwise};
+        \end{array}\right.$
+    \item $b(i,x)=\left\{\begin{array}{ll}
+        b_{i} \mbox{ as in (2)}, &\mbox{if } x>0 \mbox{ and } 1\leq i \leq l,\\
+        0& \mbox{otherwise};
+        \end{array}\right.$
+    \item $a(i,x)=\left\{\begin{array}{ll}
+        a_{i} \mbox{ as in (3)}, &\mbox{if } x>0 \mbox{ and } 1\leq i \leq l,\\
+        0& \mbox{otherwise};
+        \end{array}\right.$
+    \end{enumerate}
+    
+    \begin{solution}
+    \begin{enumerate}
+        
+        \item $\alpha(i,x) = rm(2,qt(2^i,x))$ is computable.
+        
+        \item $l(x) =  \sum_{i\leq x} \alpha(i,x)$ is computable.
+        
+        \item $b(i,x)=\left\{\begin{array}{ll}
+        \mu z \leq x(\sum_{j \leq z} \alpha(j,x) - i)& \mbox{ if } x > 0 \mbox{ and }  1 \leq i \leq l(x)\\
+        0& \mbox{otherwise}
+        \end{array}\right.$
+        
+        \item $a_i$ means the number of 0's between the ${i-1}_{th}$ 1 and $i_{th}$ 1 between the binary x. For $x>0$ and $1\leq i \leq l(x)$, define
+            \begin{align*}
+            a(1,x) &= b(1,x)\\
+            a(i+1,x) & = b(i+1,x)\dot - b(i,x) \dot - 1
+            \end{align*}
+    
+    \end{enumerate}
+    
+    \end{solution}
+\end{enumerate}
+
+
+%========================================================================
+\end{document}
