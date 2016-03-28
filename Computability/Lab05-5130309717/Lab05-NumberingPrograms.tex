@@ -38,7 +38,6 @@
 \setlength{\textheight}{10.1in}
 \setlength{\textwidth}{7in}
 
-
 \begin{document}
 
 \noindent\framebox[\linewidth]{\shortstack[c]{
@@ -60,6 +59,14 @@ CS363-Computability Theory, Xiaofeng Gao, Spring 2016}}
       \item $W_{k(n)}^{(m)}=\{(y_{1},\ldots,y_{m}):y_{1}+y_{2}+\ldots+y_{m}=n\}$ ($m\geq 1$).
       \item $E_{k(n)}=W_n$.
     \end{enumerate}
+    \begin{solution}
+      (a)Let $P_{m}$ be the program corresponding to $f_{P_{m}}(x)=\lfloor\sqrt[n]{x}\rfloor$\\
+      then the $P_{m}$ can be describe as 1)keep calculating $i^{n}$, where i grow up 2)when the first $i^{n} > x$, stop 3)the result is $(i-1)$. So apparently we can decide the $P_{m}$ therefore by the Church's Thesis, $k(n)$ is computable.\\
+      (b) $k(n)$ is the index of the function that will terminate $\iff \sum\limits_{i=0}^{m}{y_{i}} = n$\\
+      So the corresponding $P_{k(n)}$ can check the input satisfy the condition. If not it will turn into a endless loop.\\
+      By the Church's Thesis, the $k(n)$ is computable.\\
+      (c) $f_{P_{k(n)}}(x)$ is the inverse function of the $f_{P{n}}$, $k(n)$ is apparently computable.      
+    \end{solution}
 
   \item
   \begin{enumerate}
@@ -68,6 +75,7 @@ CS363-Computability Theory, Xiaofeng Gao, Spring 2016}}
     $ $\\
     $P_{1028} = 2^{10} + 2^2$, so we can know that $a_1 = 2, a_2 = 7$.
     Therefore, the instructions are T(1,1) and J(1,1,2).
+    $\phi_{1028}(x) = 1, W_{1028}(x) = N, E_{1028}(x) = {1}.$
     \end{solution}
     \item Let $P$ be the program J(1,2,4), Z(1), S(1). Calculate $\gamma(P)$.
     \begin{solution} 
@@ -75,7 +83,7 @@ CS363-Computability Theory, Xiaofeng Gao, Spring 2016}}
     $ \beta(J(1,2,4)) = 4\zeta(1,2,4) + 3 = 4\pi(\pi(0,1),3) + 3  = 111 $ \\
     $ \beta(Z(1)) = 0 $\\
     $ \beta(S(1)) = 1 $\\
-    Thus, $\gamma(P) = 2^{111} + 2^{112} + 2^{114}$
+    Thus, $\gamma(P) = 2^{111} + 2^{112} + 2^{114} - 1$
     \end{solution}
   \end{enumerate}
 \item
@@ -91,9 +99,20 @@ f_i(i)+1 & \textrm{if $f_i(n)$ is defined}\\
 0 & \textrm{otherwise} 
 \end{array} \right.
 \end{displaymath}
-
+By construction $f(i) \ne f_i(n)$, so $f \ne f_i $ ( for any $i \in \mathbb{N}$ ), thus the set of all functions from $\mathbb{N}$ to $\mathbb{N}$ is not denumerable.
 \end{proof}
 \item Show that the set of all non-computable total functions from $\mathbb{N}$ to $\mathbb{N}$ is not denumerable.
+\begin{proof}
+Define $\mathcal{F}$ as all non-computable total functions maps $\mathbb{N}$ to $\mathbb{N}$. Let $f_0$, $f_1$, $f_2$, . . . be any
+sequence of elements of $\mathcal{F}$, and these functions can be derived by previous problem, by Cantor's Diagonal Method, we can define $f \in  \mathcal{F}$ by: \\
+\begin{displaymath}
+f(i) = \left\{ \begin{array}{ll}
+f_i(i)+a(i)+1 & \textrm{if $f_i(n)$ is defined}\\
+a(i) & \textrm{otherwise} 
+\end{array} \right.
+\end{displaymath}
+By construction $f(i) \ne f_i(n)$, so $f \ne f_i $ ( for any $i \in \mathbb{N}$ ), thus the set of all non-computable total functions from $\mathbb{N}$ to $\mathbb{N}$ is not denumerable.
+\end{proof}
 \end{enumerate}
 
 \item Alternative Selection of $\pi$
@@ -115,8 +134,28 @@ f_i(i)+1 & \textrm{if $f_i(n)$ is defined}\\
   \end{minipage}
 
   Now please develop a mathematical formula for $\pi'$, (like the notation of original $\pi$),  and prove the correctness of your design.
-
-
+ 
+  \begin{solution}
+    \begin{displaymath}
+    \pi^{'} = \left\{ \begin{array}{ll}
+    x + y^2 & \textrm{if $x < y$}\\
+    x^2 + x + y & \textrm{otherwise} 
+    \end{array} \right.
+    \end{displaymath}
+  Now we begin to prove that $\pi^{'}$ is bijective. \\
+  \textbf{Injective}
+  For $\forall (x_1,y_1),(x_2,y_2)$, with $x_1 \ne x_2$ or $y_1 \ne y_2$. We can define $R  =\pi^{'}(x_1,y_1)-\pi^{'}(x_2,y_2)$
+  \begin{enumerate}
+  \item $x_1 < y_1$ and $x_2<y_2$: $R=(x_1-x_2) + (y_1 -y_2)(y_1 + y_2)$  
+  \item $x_1 \le y_1$ and $x_2 \le y_2$: $R=(x_1+x_2+1)(x_1-x_2)+(y_1-y_2)$
+  \item $x_1<y_1$ and $x_2 \le y_2$: $R=x_1 + y_1^2 - x_2^2 -x_2 -y_2$.
+  \end{enumerate}
+    We can infer that none of $R = 0$, thus it is injective. \\
+  \textbf{Surjective} For $\forall n \in \mathbb{N}$, $\exists a,b \in \mathbb{N}$, such that $n = a + b^2$. If $a < b$, then we let $x = a$, $y = b$, else if $ a \ge b$, we can let $x = b$, $y = a -b$. That means we fin  That means $\forall n \in \mathbb{N}$, we can find $x$,$y$, makes $\pi^{'}(x,y) = n$. So it is surjective.\\
+  
+  Therefore the function we desgin is a bijective map form $\mathbb{N}$ to $\mathbb{N}$.
+  \end{solution}
+ 
 \end{enumerate}
 
 
