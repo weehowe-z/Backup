@@ -4,7 +4,6 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.io.File;
 import java.io.FileInputStream;
-// import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,8 +14,6 @@ public class Server {
     public static void main(String[] args) throws Exception {
 
         File file = new File("test.zip");
-
-
 
         int portNumber;
         if (args.length == 0){
@@ -58,9 +55,11 @@ public class Server {
             }
           } catch (IOException e){
               System.out.println("Error! Socket accept IO Exception.");
+              System.exit(-1);
           } finally{
               System.out.println("close listening");
               serverSocket.close();
+              System.exit(0);
           }
     }
 }
