@@ -1,16 +1,21 @@
 #General Java Makefile
 
 JAVAC=javac
-sources = $(wildcard src/*.java)
-classes = $(sources:.java=.class)
+# sources = $(wildcard src/*.java)
+# classes = $(sources:.java=.class)
 
-all: $(classes)
+all: FileSocket
 
 clean :
-	rm -f bin/*.class
+	rm -f bin/*/*.class
 
 DateSocket :
 		$(JAVAC) src/DateSocket/*.java -d bin/
 
-%.class : %.java
-	$(JAVAC) $< -d bin/
+FileSocket:
+		$(JAVAC) src/FileSocket/*.java -d bin/
+
+
+
+# %.class : %.java
+#   $(JAVAC) $< -d bin/
