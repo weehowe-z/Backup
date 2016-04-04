@@ -1,0 +1,88 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs, euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage{multicol}
+
+\theoremstyle{definition}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}[section]
+\newtheorem*{solution}{Solution}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+%changing 1.5 will give you different space between lines.
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+
+
+\begin{document}
+
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab06-Universal Program}}\vspace{1mm}\\
+CS363-Computability Theory, Xiaofeng Gao, Spring 2016}}
+\begin{center}
+\footnotesize{\color{red}$*$ Please upload your assignment to FTP or submit a paper version on the next class}
+
+\footnotesize{\color{red}$*$ If there is any problem, please contact: nongeek.zv@gmail.com }
+
+\footnotesize{\color{blue}$*$ Name:\_\_\_\_\_\_\_\_ \quad StudentId: \_\_\_\_\_\_\_\_ \quad Email: \_\_\_\_\_\_\_\_}
+\end{center}
+
+
+\begin{enumerate}%[topsep=0pt, partopsep=0pt, itemsep=2pt,parsep=2pt]
+
+\item
+\begin{enumerate}
+\item Show that there is a decidable predicate $Q(x,y,z)$ such that
+\begin{enumerate}
+\item $y\in E_x$ if and only if $\exists z.Q(x,y,z)$
+\item if $y\in E_x$ and $Q(x,y,z)$, then $\phi_x((z)_1)=y$.
+\end{enumerate}
+\item Deduce that there is a computable function $g(x,y)$ such that
+\begin{enumerate}
+\item $g(x,y)$ is defined if and only if $y\in E_x$.
+\item if $y\in E_x$, then $g(x,y)\in W_x$ and $\phi_x(g(x,y))=y$; i.e. $g(x,y)\in \phi^{-1}_x(\{y\})$.
+\end{enumerate}
+\item Deduce that if $f$ is a computable injective function (not necessarily total or surjective) then $f^{-1}$ is computable. (cf. exercise 2-5.4(1)).
+\end{enumerate}
+\item (cf. example 3-7.1(b)) Suppose that $f$ and $g$ are unary computable functions; assuming that $T_1$ has been formally proved to be decidable, prove formally that the function $h(x)$ defined by \\
+    $h(x)=\left\{\begin{array}{ll}
+    1& \mbox{if } x\in Dom(f) \mbox{ or } x\in Dom(g),\\
+    \uparrow & \mbox{otherwise},
+    \end{array}\right.$ is computable.
+
+\item Show that there is a total computable function $k(e_1, e_2)$ such that $\phi_{k(e_1,e_2)}(x)$ is the characteristic function for predicate ``$M_1(x)$ and $M_2(x)$", where $M_1$ and $M_2$ are both decidable predicate and $\phi_{e_1}=c_{M_1}$,  $\phi_{e_2}=c_{M_2}$.
+\item Show that there is a total computable function $s(x,y)$ such that for all $x,y$, $E_{s(x,y)}=W_x \cup E_y$.
+
+\item Suppose that $f(x)$ is computable; show that there is a total computable function $k(x)$ such that for all $x$, $W_{k(x)}=f^{-1}(W_x)$.
+
+\end{enumerate}
+
+
+
+%========================================================================
+\end{document}
