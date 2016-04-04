@@ -49,7 +49,7 @@ CS363-Computability Theory, Xiaofeng Gao, Spring 2016}}
 
 \footnotesize{\color{red}$*$ If there is any problem, please contact: nongeek.zv@gmail.com }
 
-\footnotesize{\color{blue}$*$ Name:\_\_\_\_\_\_\_\_ \quad StudentId: \_\_\_\_\_\_\_\_ \quad Email: \_\_\_\_\_\_\_\_}
+\footnotesize{\color{blue}$*$ Name: Wenhao Zhu \quad StudentId: 5130309717 \quad Email: weehowe.z@gmail.com}
 \end{center}
 
 
@@ -62,24 +62,57 @@ CS363-Computability Theory, Xiaofeng Gao, Spring 2016}}
 \item $y\in E_x$ if and only if $\exists z.Q(x,y,z)$
 \item if $y\in E_x$ and $Q(x,y,z)$, then $\phi_x((z)_1)=y$.
 \end{enumerate}
+\begin{proof}
+Note that $y \in E_x$ iff there exists some s such that $\phi_x(s) = y$, that is, iff the computation $P_x(s)$ halts with output y after a infinite some t steps. Thus under the effective coding $z = 2^s3^t$ we can define: $Q(x,y,z)=s_1(x,s,y,t)=s_1(x,(z)_1,y,(z)_2)$
+Now Q is decidable by substitution.
+\end{proof}
 \item Deduce that there is a computable function $g(x,y)$ such that
 \begin{enumerate}
 \item $g(x,y)$ is defined if and only if $y\in E_x$.
 \item if $y\in E_x$, then $g(x,y)\in W_x$ and $\phi_x(g(x,y))=y$; i.e. $g(x,y)\in \phi^{-1}_x(\{y\})$.
 \end{enumerate}
+\begin{proof}
+Define $g(x,y) \simeq (\mu zQ(x,y,z))_1 $
+\end{proof}
 \item Deduce that if $f$ is a computable injective function (not necessarily total or surjective) then $f^{-1}$ is computable. (cf. exercise 2-5.4(1)).
+\begin{proof}
+$f$ is computable,accroding to unbounded minimization $\mu y(f(x)=y)$ is computable .Since $f^{-1}(y) = \mu y(f(x)=y)$ so $f^{-1}$is computable.
+\end{proof}
 \end{enumerate}
 \item (cf. example 3-7.1(b)) Suppose that $f$ and $g$ are unary computable functions; assuming that $T_1$ has been formally proved to be decidable, prove formally that the function $h(x)$ defined by \\
     $h(x)=\left\{\begin{array}{ll}
     1& \mbox{if } x\in Dom(f) \mbox{ or } x\in Dom(g),\\
     \uparrow & \mbox{otherwise},
     \end{array}\right.$ is computable.
+\begin{proof}
+Because $f$ and $g$ are unary computable functions, there exists $e_1$, $e_2 \in N$ such that $f \simeq \phi_{e_1}$, $g \simeq \phi_{e_2}$. So, $h(x) \simeq sg(µt(T1(e_1, x, t)$ OR $T1(e_1, x, t)) + 1)$. $h(x)$ is defined if and only
+if $\exists t, T1(e_1, x, t)$ or $T1(e_2, x, t)$. And when it is defined,it outputs 1.
+$h(x)$ uses only one $µ$ operation and is composed of several primitive recursive functions and predicates, so, it is computable.
+\end{proof}
 
 \item Show that there is a total computable function $k(e_1, e_2)$ such that $\phi_{k(e_1,e_2)}(x)$ is the characteristic function for predicate ``$M_1(x)$ and $M_2(x)$", where $M_1$ and $M_2$ are both decidable predicate and $\phi_{e_1}=c_{M_1}$,  $\phi_{e_2}=c_{M_2}$.
+\begin{proof}
+Define $f(e_1,e_2,x) = \phi_{e_1}(x)\phi_{e_2}(x) = \psi_U(e_1, x)\psi_U(e_2,x)$. \\
+We can know that $f(e_1, e_2, x)$ is also a characteristic function for ``$M_1(x)$ and $M_2(x)$". Because ``$M_1(x)$ and $M_2(x)$" are both decidable predicate, $f(e_1, e_2, x)$ must be a computable function. By s-m-n theorem,there is a total computable function $k(e_1, e_2)$ such that $\phi_{k(e_1,e_2)}(x) \simeq f(e_1, e_2, x)$.
+\end{proof}
+
 \item Show that there is a total computable function $s(x,y)$ such that for all $x,y$, $E_{s(x,y)}=W_x \cup E_y$.
+\begin{proof}
+For pair $x$,$y$,we can define such a function:
+   $f(x,y,z)= \begin{cases} \frac{z}{2} & \mbox {z is even}\\
+    \phi_x(\frac{z+1}{2}) & \mbox {z is odd}
+        \end{cases}$ \\
+By the s-n-m theory there exists a total computable function $s(x,y)$ such that for all $x$ and $y$, $\phi_{s(x,y)}(z) = f(x,y,z)$. So it is obvious that $E_s(x,y) = W_X\cup E_y$.
+\end{proof}
 
 \item Suppose that $f(x)$ is computable; show that there is a total computable function $k(x)$ such that for all $x$, $W_{k(x)}=f^{-1}(W_x)$.
-
+\begin{proof}
+Define     $g(x,y)=\left\{\begin{array}{ll}
+    1& \mbox{if } f(y)\in W_x\\
+    undefined & \mbox{otherwise}
+    \end{array}\right.$ ,\\
+As we know that $f(x)$ is computable, so $g(x,y)$ is also compuatble. By s-m-n theorem, there is a total computable function $k(x)$ such that $\phi_{k(x)}(y) \simeq g(x,y)$. And it is obvious that for any fixed x, the domain of $\phi_{k(x)}(y)$ is $f^{-1}(W_x)$ by definition of $g(x,y)$.
+\end{proof}
 \end{enumerate}
 
 
