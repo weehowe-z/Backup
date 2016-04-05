@@ -51,15 +51,15 @@ public class GUI {
       mainFrame.addKeyListener(new CustomKeyListener());
       textField  = new TextField(10);
 
-      FileDialog fd = new FileDialog(mainFrame, "Choose a file", FileDialog.LOAD);
-      fd.setDirectory("C:\\");
-      fd.setVisible(true);
-      fd.setFile("*.xml");
-      String filename = fd.getFile();
-      if (filename == null)
-        System.out.println("You cancelled the choice");
-      else
-        System.out.println("You chose " + filename);
+      // FileDialog fd = new FileDialog(mainFrame, "Choose a file", FileDialog.LOAD);
+      // fd.setDirectory("C:\\");
+      // fd.setVisible(true);
+      // fd.setFile("*.xml");
+      // String filename = fd.getFile();
+      // if (filename == null)
+      //   System.out.println("You cancelled the choice");
+      // else
+      //   System.out.println("You chose " + filename);
 
       // Button chooseButton = new Button("Choose Upload File");
       // Button pathButton = new Button("Choose Download Path");
