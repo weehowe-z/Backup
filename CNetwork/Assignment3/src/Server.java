@@ -14,12 +14,18 @@ public class Server implements Runnable {
     public int portNumber;
     public String filename;
     public File file;
+    private volatile boolean stopflag = false;
 
     public Server(File f,String n, int p) {
       file = f;
       filename = n;
       portNumber = p;
     }
+
+    public void setStop(){
+      stopflag = true;
+    }
+
 
     public void run (){
 
@@ -28,6 +34,7 @@ public class Server implements Runnable {
       ServerSocket serverSocket = null;
       try {
           serverSocket = new ServerSocket(portNumber);
+          serverSocket.setSoTimeout(2000);
       } catch (IOException e){
           System.out.println("Error! Can't setup server on this port number, may be occupied.");
           System.exit(-1);
@@ -35,38 +42,43 @@ public class Server implements Runnable {
       System.out.println("Server running...\tPress ctrl-c to stop.");
 
       try {
-          while (true) {
-              System.out.println("Server is listening!");
-              Socket clientSocket = serverSocket.accept();
-              int count;
+          System.out.println("Server is listening!");
+          while (!stopflag) {
 
-              byte[] buffer = new byte[16*1024];
-              byte[] lengthBuffer = new byte[1];
+              try {
+                Socket clientSocket = serverSocket.accept();
+                int count;
 
-              InputStream in = new FileInputStream(file);
-              OutputStream out = clientSocket.getOutputStream();
+                byte[] buffer = new byte[16*1024];
+                byte[] lengthBuffer = new byte[1];
 
-              String name = filename;
-              byte[] namebuffer = name.getBytes();
-              int length = namebuffer.length;
-              for (int i = 0; i<length; ++i){
-                // System.out.print(namebuffer[i] + " ");
+                InputStream in = new FileInputStream(file);
+                OutputStream out = clientSocket.getOutputStream();
+
+                String name = filename;
+                byte[] namebuffer = name.getBytes();
+                int length = namebuffer.length;
+
+                lengthBuffer[0] = (byte)length;
+                out.write(lengthBuffer,0,1);
+                out.write(namebuffer,0,length);
+
+                while ((count = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, count);
+                }
+
+                clientSocket.close();
+                out.close();
+                in.close();
               }
-              lengthBuffer[0] = (byte)length;
-              out.write(lengthBuffer,0,1);
-              out.write(namebuffer,0,length);
-
-              while ((count = in.read(buffer)) > 0) {
-                  out.write(buffer, 0, count);
+              catch (Exception e){
+                // System.out.println(e);
               }
-              
-              clientSocket.close();
-              out.close();
-              in.close();
+
           }
-        } catch (IOException e){
+        } catch (Exception e){
             System.out.println(e);
-            System.exit(-1);
+            // System.exit(-1);
         } finally{
             System.out.println("close listening");
             try {
@@ -74,9 +86,9 @@ public class Server implements Runnable {
             }
             catch (IOException e){
               System.out.println(e);
-              System.exit(-1);
+              // System.exit(-1);
             }
-            System.exit(0);
+            // System.exit(0);
         }
     }
 

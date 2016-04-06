@@ -16,6 +16,8 @@ public class GUI {
    private TextField addressText;
    private File file = null;
    private String filename = null;
+   private Server server = null;
+   private Thread serverThread = null;
 
    public GUI(){
       prepareGUI();
@@ -155,11 +157,33 @@ public class GUI {
       if (Flag) {
           Flag = false;
           System.out.println("[GUI]:Server thread begin....");
-          Thread Server = new Thread(new Server(file,filename,portNumber));
-          Server.start();
+          // Thread Server = new Thread(new Server(file,filename,portNumber));
+          server = new Server(file,filename,portNumber);
+          serverThread = new Thread(server);
+          serverThread.start();
       }
       else {
-        System.out.println("[GUI]:Server already started, don't press <ENTER> again!");
+        //stop the previous thread
+        System.out.println("[GUI]:Server thread begin stop....");
+
+        server.setStop();
+        System.out.println("[GUI]:Server thread flag has change....");
+
+        try {
+          System.out.println("[GUI]:Server thread begin join....");
+
+          serverThread.join();
+          System.out.println("[GUI]:Server thread end join....");
+
+        }
+        catch (Exception e){
+          System.out.println("thread join error");
+          return;
+        }
+        server = new Server(file,filename,portNumber);
+        serverThread = new Thread(server);
+        serverThread.start();
+        // System.out.println("[GUI]:Server already started, don't press <ENTER> again!");
       }
    }
 

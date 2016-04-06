@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello!</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="assignment3">Assignment3</h1>
+
+
+
+<h4 id="name-wenhao-zhu">Name: Wenhao Zhu</h4>
+
+
+
+<h4 id="student-id-5130309717">Student ID: 5130309717</h4>
+
+<hr>
+
+
+
+<h2 id="introduction">Introduction</h2>
+
+<p>由于客户端和服务端都是新开线程，因此，测试时可以选择： <br>
+- 一台机器打开一个GUI，可以同时作为服务端和客户端进行文件传输 <br>
+- 一台机器打开两个GUI，各自作为服务端或客户端进行文件传输（需要使用不同端口） <br>
+- 两台机器各自打开GUI，各自作为服务端或客户端进行文件传输（需要在同一局域网内并指定地址）</p>
+
+
+
+<h2 id="1compile-run">1.Compile &amp; Run</h2>
+
+
+
+<pre class="prettyprint"><code class="language-shell hljs ruby"><span class="hljs-variable">$ </span>make
+<span class="hljs-variable">$ </span>java <span class="hljs-constant">FileShare</span>.<span class="hljs-constant">GUI</span></code></pre>
+
+
+
+<h2 id="2use-as-server-side">2.Use as Server Side</h2>
+
+
+
+<h3 id="select-file">Select file</h3>
+
+<p>点击 <code>Choose File</code> 按钮</p>
+
+<blockquote>
+  <p>由于采用的 java awt 很多控件是调用的系统自带的， 在 Linux 下可能出现错误，一般关闭重开即可解决。</p>
+</blockquote>
+
+
+
+<h3 id="run-server">Run Server</h3>
+
+<p>点击 <code>Start Server</code> 按钮</p>
+
+<blockquote>
+  <p>需要指定端口，默认或不填为2680，如果端口被占用会自动退出</p>
+</blockquote>
+
+<p>启动服务后便可以通过浏览器直接访问地址获取文件， 如’0.0.0.0：2680’。 但是为了传输<strong>文件名</strong>，我的编码方式是，在文件之前第一个 byte 记录的是文件名的长度 l，接下来的 l 个 byte 保存文件名的 ASCII 编码， 再接下来才是文件内容， 因此如果是纯文本则可以明显在浏览器内看到前几个字节的变化，而其他类型文件下载后可能无法打开。</p>
+
+
+
+<h2 id="3use-as-client-side">3.Use as Client Side</h2>
+
+<p>输入需要建立连接的服务端地址，如本机 ‘0.0.0.0:2680’, 局域网内 ‘192.168.1.113:12345’等等。点击 <code>Start Download</code> 按钮即可开始下载，下载到的文件存放在 <code>Downloads</code> 文件夹下。</p>
+
+
+
+<h2 id="4check-the-file-integrity">4.Check the file integrity</h2>
+
+<p>不妨采用<code>md5</code>校验下载得到的文件完整性，<code>md5</code>应该是相同的</p>
+
+
+
+<pre class="prettyprint"><code class="language-shell hljs ruby"><span class="hljs-variable">$ </span>md5sum test.zip
+<span class="hljs-variable">$ </span>md5sum <span class="hljs-constant">Downloads</span>/test.zip</code></pre>
+
+
+
+<h2 id="5other">5.Other</h2>
+
+<p><strong>The code and other related information can be also found on my <a href="https://github.com/weehowe-z/backup/tree/master/CNetwork/Assignment3">github</a>.</strong></p>
+
+<p><strong>Any problem happens to my code(can’t run.. etc), plz contact me at <a href="mailto:weehowe.z@gmail.com">weehowe.z@gmail.com</a>.</strong></p>
+
+<p>目前只在 <code>Ubuntu 15.10</code> 和 <code>Win10</code> 下做了测试，有问题的话可以联系我远程演示 = =</p></div></body>
+</html>
