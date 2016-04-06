@@ -23,22 +23,44 @@ public class Client implements Runnable {
             Socket socket = new Socket(hostname, portNumber);
             InputStream in = socket.getInputStream();
             OutputStream out = null;
+
+            int count;
+            System.out.println("Download begin");
+
+            //get Filename length
+            byte[] lengthBuffer = new byte[1];
+
+            byte[] buffer = new byte[16*1024];
+
+            in.read(lengthBuffer);
+            int length = (int)lengthBuffer[0];
+            byte[] nameBuffer = new byte[length];
+            //read Filename
+            in.read(nameBuffer,0,length);
+            String filename = new String(nameBuffer);
+            System.out.println(length);
+            System.out.println(filename);
+
             try {
-                out = new FileOutputStream("Downloads/test.zip");
+                System.out.println("Downloads/"+filename);
+                out = new FileOutputStream("Downloads/"+filename);
             }
+
             catch (IOException e){
                 System.out.println("Error! No such file or directory.");
                 // System.exit(-1);
             }
-            int count;
-            System.out.println("Download begin");
-            byte[] buffer = new byte[16*1024];
+
+            //read File
+
             while ((count = in.read(buffer)) > 0) {
                 out.write(buffer, 0, count);
             }
+
             socket.close();
             out.close();
             in.close();
+
             System.out.println("Download finish");
             System.out.println("---------------");
         }

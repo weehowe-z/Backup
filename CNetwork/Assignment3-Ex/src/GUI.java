@@ -120,11 +120,11 @@ public class GUI {
    }
 
    private void startServer(){
-       if (file == null){
-         System.out.println("[GUI]:Please choose a file to send!");
-         statusLabel.setText("Please choose a file to send!");
-         return;
-       }
+      //  if (file == null){
+      //    System.out.println("[GUI]:Please choose a file to send!");
+      //    statusLabel.setText("Please choose a file to send!");
+      //    return;
+      //  }
        if (portText.getText().equals("")){
          runServer(file,filename,2680);
        }

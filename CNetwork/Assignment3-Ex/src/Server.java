@@ -41,9 +41,24 @@ public class Server implements Runnable {
               System.out.println("Server is listening!");
               Socket clientSocket = serverSocket.accept();
               int count;
+
               byte[] buffer = new byte[16*1024];
+              byte[] lengthBuffer = new byte[1];
+
               InputStream in = new FileInputStream(file);
+
               OutputStream out = clientSocket.getOutputStream();
+
+              String name = filename;
+              byte[] namebuffer = name.getBytes();
+              int length = namebuffer.length;
+              for (int i = 0; i<length; ++i){
+                // System.out.print(namebuffer[i] + " ");
+              }
+              lengthBuffer[0] = (byte)length;
+              out.write(lengthBuffer,0,1);
+              out.write(namebuffer,0,length);
+
               while ((count = in.read(buffer)) > 0) {
                   out.write(buffer, 0, count);
               }

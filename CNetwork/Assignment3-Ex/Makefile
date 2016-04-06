@@ -8,6 +8,7 @@ all: GUI
 
 clean :
 	rm -f FileSocket/*.class
+	rm -f Downloads/*
 
 # %.class : %.java
 # $(JAVAC) $< -d .
