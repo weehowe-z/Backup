@@ -1,4 +1,4 @@
-package FileSocket;
+package FileShare;
 
 import java.io.File;
 import java.awt.*;
@@ -27,7 +27,7 @@ public class GUI {
    }
 
    private void prepareGUI(){
-      mainFrame = new Frame("File Share Socket Demo");
+      mainFrame = new Frame("File Share Demo");
       mainFrame.setSize(400,500);
       mainFrame.setLayout(new GridLayout(3, 1));
       mainFrame.addWindowListener(new WindowAdapter() {
@@ -52,8 +52,7 @@ public class GUI {
    }
 
    private void show(){
-      headerLabel.setText("Press <ENTER> to begin download.");
-      // mainFrame.addKeyListener(new CustomKeyListener());
+      headerLabel.setText("FileShare Demo");
 
       //As Server
       fd = new FileDialog(mainFrame, "Select file");
@@ -100,12 +99,14 @@ public class GUI {
       controlPanel.add(addressText);
       controlPanel.add(downloadStartButton);
 
+      mainFrame.addKeyListener(new CustomKeyListener());
+      portText.addKeyListener(new CustomKeyListener());
+      addressText.addKeyListener(new CustomKeyListener());
+      downloadStartButton.addKeyListener(new CustomKeyListener());
+      chooseButton.addKeyListener(new CustomKeyListener());
+      serverStartButton.addKeyListener(new CustomKeyListener());
 
-
-
-      // controlPanel.add(pathButton);
       mainFrame.setVisible(true);
-      // statusLabel.setText("Socket running, you can see the terminal for more details.");
    }
 
    private void chooseFile(){
@@ -120,11 +121,11 @@ public class GUI {
    }
 
    private void startServer(){
-      //  if (file == null){
-      //    System.out.println("[GUI]:Please choose a file to send!");
-      //    statusLabel.setText("Please choose a file to send!");
-      //    return;
-      //  }
+       if (file == null){
+         System.out.println("[GUI]:Please choose a file to send!");
+         statusLabel.setText("Please choose a file to send!");
+         return;
+       }
        if (portText.getText().equals("")){
          runServer(file,filename,2680);
        }
@@ -168,29 +169,18 @@ public class GUI {
         Client.start();
    }
 
-  //  class CustomKeyListener implements KeyListener{
-  //     public void keyTyped(KeyEvent e) {
-  //     }
-   //
-  //     public void keyPressed(KeyEvent e) {
-  //        if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
-  //           // statusLabel.setText("Entered text: " + textField.getText());
-  //           System.exit(-1);
-  //        }
-  //        else if (e.getKeyCode() == KeyEvent.VK_ENTER){
-  //          statusLabel.setText("Download finish, press <ESC> to quit.");
-  //         //  runServer();
-  //         //  try {
-  //         //    Thread.sleep(2000);
-  //         //  }
-  //         //  catch (Exception exception){
-  //         //    System.out.println(exception);
-  //         //  }
-  //          runClient();
-  //        }
-  //     }
-   //
-  //     public void keyReleased(KeyEvent e) {
-  //     }
-  //  }
+   class CustomKeyListener implements KeyListener{
+      public void keyTyped(KeyEvent e) {
+      }
+
+      public void keyPressed(KeyEvent e) {
+         if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+            // statusLabel.setText("Entered text: " + textField.getText());
+            System.exit(-1);
+         }
+      }
+
+      public void keyReleased(KeyEvent e) {
+      }
+   }
 }

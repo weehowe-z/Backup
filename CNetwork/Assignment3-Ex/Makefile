@@ -7,8 +7,8 @@ classes = $(sources:.java=.class)
 all: GUI
 
 clean :
-	rm -f FileSocket/*.class
 	rm -f Downloads/*
+	rm -rf FileShare/
 
 # %.class : %.java
 # $(JAVAC) $< -d .

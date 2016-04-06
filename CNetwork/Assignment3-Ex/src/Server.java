@@ -1,4 +1,4 @@
-package FileSocket;
+package FileShare;
 
 import java.net.Socket;
 import java.net.ServerSocket;
@@ -22,9 +22,7 @@ public class Server implements Runnable {
     }
 
     public void run (){
-      // File file = new File("test.zip");
 
-      // int portNumber = 2680;
       System.out.println("Server address:\t\thttp://0.0.0.0:" + Integer.toString(portNumber) + "/");
 
       ServerSocket serverSocket = null;
@@ -46,7 +44,6 @@ public class Server implements Runnable {
               byte[] lengthBuffer = new byte[1];
 
               InputStream in = new FileInputStream(file);
-
               OutputStream out = clientSocket.getOutputStream();
 
               String name = filename;
@@ -62,6 +59,7 @@ public class Server implements Runnable {
               while ((count = in.read(buffer)) > 0) {
                   out.write(buffer, 0, count);
               }
+              
               clientSocket.close();
               out.close();
               in.close();

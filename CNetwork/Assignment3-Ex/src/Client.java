@@ -1,4 +1,4 @@
-package FileSocket;
+package FileShare;
 
 import java.net.Socket;
 import java.io.FileOutputStream;
@@ -38,8 +38,6 @@ public class Client implements Runnable {
             //read Filename
             in.read(nameBuffer,0,length);
             String filename = new String(nameBuffer);
-            System.out.println(length);
-            System.out.println(filename);
 
             try {
                 System.out.println("Downloads/"+filename);
@@ -52,7 +50,6 @@ public class Client implements Runnable {
             }
 
             //read File
-
             while ((count = in.read(buffer)) > 0) {
                 out.write(buffer, 0, count);
             }
