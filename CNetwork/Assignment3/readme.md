@@ -6,14 +6,14 @@
 
 ---
 
-## 使用说明
+## Introduction
 
 由于客户端和服务端都是新开线程，因此，测试时可以选择：
 - 一台机器打开一个GUI，可以同时作为服务端和客户端进行文件传输
 - 一台机器打开两个GUI，各自作为服务端或客户端进行文件传输（需要使用不同端口）
 - 两台机器各自打开GUI，各自作为服务端或客户端进行文件传输（需要在同一局域网内并指定地址）
 
-## 1.编译及运行
+## 1.Compile & Run
 
 ```shell
 $ make
@@ -22,12 +22,12 @@ $ java FileShare.GUI
 
 ## 2.Use as Server Side
 
-### 选择文件
+### Select file
 
 点击 `Choose File` 按钮
 > 由于采用的 java awt 很多控件是调用的系统自带的， 在 Linux 下可能出现错误，一般关闭重开即可解决。
 
-### 启动服务端
+### Run Server
 点击 `Start Server` 按钮
 > 需要指定端口，默认或不填为2680，如果端口被占用会自动退出
 
@@ -49,7 +49,7 @@ $ md5sum Downloads/test.zip
 ## 5.Other
 
 
-**The code and other related information can be also found on my [github](https://github.com/weehowe-z/backup/tree/master/CNetwork/Assignment3-Ex).**
+**The code and other related information can be also found on my [github](https://github.com/weehowe-z/backup/tree/master/CNetwork/Assignment3).**
 
 **Any problem happens to my code(can't run.. etc), plz contact me at [weehowe.z@gmail.com](mailto:weehowe.z@gmail.com).**
 
