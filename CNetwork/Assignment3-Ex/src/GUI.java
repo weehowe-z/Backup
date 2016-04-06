@@ -84,7 +84,7 @@ public class GUI {
       controlPanel.add(splitLabel);
 
       //As Client
-      Label addressLabel = new Label("[Client]Please enter the target url:");
+      Label addressLabel = new Label("[Client]Please enter the address:");
       Button downloadStartButton = new Button("Start Download");
       addressText  = new TextField("0.0.0.0:2680",18);
 
