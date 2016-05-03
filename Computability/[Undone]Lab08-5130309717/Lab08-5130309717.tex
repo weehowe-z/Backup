@@ -1,0 +1,145 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+%\usepackage{float}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}[section]
+\newtheorem*{solution}{Solution}
+\theoremstyle{definition}
+
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab08-Recursively Enumerable Set}}\vspace{1mm}\\
+CS363-Computability Theory, Xiaofeng Gao, Spring 2016}}
+\begin{center}
+\footnotesize{\color{red}$*$ Please upload your assignment to FTP or submit a paper version on the next class}
+
+\footnotesize{\color{red}$*$ If there is any problem, please contact: steinsgate@sjtu.edu.cn}
+
+\footnotesize{\color{blue}$*$ Name: Wenhao Zhu \quad StudentId: 5130309717 \quad Email: weehowe.z@gmail.com}
+\end{center}
+
+\begin{enumerate}
+\item Let $A,B$ be subsets of $\mathbb{N}$. Define sets $A\oplus B$ and $A\otimes B$ by
+$$
+\begin{array}{l}
+A\oplus B=\{2x \mid x\in A\}\cup\{2x+1 \mid x\in B\},\\[3pt]
+A\otimes B=\{\pi (x,y) \mid x\in A \mbox{ and } y\in B\},
+\end{array}$$
+where $\pi$ is the pairing function $\pi(x,y)=2^x(2y+1)-1$. Prove that
+  \begin{enumerate}
+  \item $A\oplus B$ is recursive iff $A$ and $B$ are both recursive.
+  \item If $A,B\neq\varnothing$, then $A\otimes B$ is recursive iff $A$ and $B$ are both recursive.
+  \end{enumerate}
+
+  \begin{solution}
+  $ $
+  \begin{enumerate}
+  \item (if) $c_{A\oplus B}(x)=\left\{\begin{array}{ll}
+    1, & \mbox{if } x \mbox{ is even and } x/2\in A, \mbox{or if } x \mbox{ is odd and } (x-1)/2\in B,\\
+    0, & \mbox{otherwise.}
+    \end{array}\right.$
+    Since $A$ and $B$ are both recursive, $c_{A\oplus B}(x)$ is computable, so $A\oplus B$ is recursive.
+
+    (only if) $c_{A}(x)=\left\{\begin{array}{ll}
+    1, & \mbox{if } 2x \in A\oplus B,\\
+    0, & \mbox{otherwise.}
+    \end{array}\right.$
+    Since $A\oplus B$ is recursive, $c_{A}(x)$ is computable, so $A$ is recursive. Similarly, $B$ is recursive.
+  \item (if) $c_{A\otimes B}(x)=\left\{\begin{array}{ll}
+    1, & \mbox{if } \pi_1(x)\in A \mbox{ and } \pi_2(x)\in B,\\
+    0, & \mbox{otherwise.}
+    \end{array}\right.$
+    Since $A$ and $B$ are both recursive, $c_{A\otimes B}(x)$ is computable, so $A\otimes B$ is recursive.
+
+    (only if) Since $A,B\ne \emptyset$, we can find an element $a$ in $A$ and $b$ in $B$. Then $c_{A}(x)=c_{A\otimes B}(\pi(x,b))$, $c_{B}(x)=c_{A\otimes B}(\pi(a,x))$. By substitution, $c_{A}(x)$ and $c_{B}(x)$ are computable, so $A$ and $B$ are recursive.
+  \end{enumerate}
+  \end{solution}
+
+\item Which of the following sets are recursive? Which are r.e.? Which have r.e.~complement? Prove your judgements.
+  \begin{enumerate}
+  \item $\{x \mid P_m(x) \downarrow \mbox{ in } t \mbox{ or fewer steps }\}$ ($m,t$ are fixed).
+  \item $\{x \mid x \mbox{ is a power of 2}\}$;
+  \item $\{x \mid \phi_x \mbox{ is injective}\}$;
+  \item $\{x \mid y\in E_x\}$ ($y$ is fixed);
+  \end{enumerate}
+
+  \begin{solution}
+  $ $
+  \begin{enumerate}
+  \item  $c_{A}(x)=\left\{\begin{array}{ll}
+         1, & \mbox{if } \textsf{j}(m,x,t)=0,\\
+         0, & \mbox{if } \textsf{j}(m,x,t)\neq0.
+      \end{array}\right.$
+      $\textsf{j}(m,x,t)$ is primitive recursive, so $c_{A}(x)$ is computable, so $A$ is recursive. So it is r.e. and has r.e.~complement.
+  \item  $c_{A}(x)=\left\{\begin{array}{ll}
+         1, & \mbox{if } 2^{(x)_1}=x,\\
+         0, & \mbox{otherwise.}
+      \end{array}\right.$
+      $c_{A}(x)$ is computable, so $A$ is recursive. So it is r.e. and has r.e.~complement.
+  \item Define $f(x,y)=\left\{\begin{array}{ll}
+         y, & \mbox{if }x\in W_x,\\
+         \uparrow, & \mbox{otherwise}.
+      \end{array}\right.$ $f(x,y)$ is computable. According to s-m-n theorem there exists a total computable function $k$ such that $\phi_{k(x)}(y)\simeq f(x,y)$. Clearly, $k:K\leq_m \{x \mid \phi_x \mbox{ is injective}\}$, so it is not recursive.\\
+      It has r.e. compliment because $\phi_x$ is not injective $\Leftrightarrow$ $\exists a\exists b.(\phi_x(a)= \phi_x(b) \wedge a\neq b)$. The right side is a partial decidable predicate thus $\{x \mid \phi_x \mbox{ is not injective}\}$ is r.e.\\
+      $\{x \mid \phi_x \mbox{ is injective}\}$ is not r.e. because if it is r.e., $\{x \mid \phi_x \mbox{ is injective}\}$ would be recursive.
+  \item Define $f(x,z)=\left\{\begin{array}{ll}
+         y, & \mbox{if }x\in W_x,\\
+         \uparrow, & \mbox{otherwise}.
+      \end{array}\right.$ $f(x,z)$ is computable. According to s-m-n theorem there is a total computable function $k$ such that $\phi_{k(x)}(z)=f(x,z)$. Clearly, $k:\{x\mid x\in W_x\}\leq_m \{x \mid y\in E_x\}$, so it is not recursive.\\
+      It is r.e. because $y\in E_x\Leftrightarrow\exists a\exists t(P_x(a)\downarrow y \mbox{ in } t \mbox{ steps})$. The right side is partially decidable thus $\{x \mid y\in E_x\}$ is r.e.\\
+      It doesn't have r.e. compliment because if so, $\{x \mid y\in E_x\}$ would be recursive.
+  \end{enumerate}
+  \end{solution}
+
+\item Prove following statements.
+\begin{enumerate}
+\item Let $B\subseteq\mathbb{N}$ and $n>1$; prove that $B$ is r.e. then the predicate $M(x_1,\ldots,x_n)$ given by ``$M(x_1,\ldots,x_n)\equiv2^{x_1}3^{x_2}\ldots p_n^{x_n}\in B$" is partially decidable.
+\item Prove that $A\subseteq\mathbb{N}^n$ is r.e. iff $\{2^{x_1}3^{x_2}\ldots p_n^{x_n} \mid (x_1,\ldots,x_n)\in A\}$ is r.e..
+\end{enumerate}
+\begin{solution}
+$ $
+\begin{enumerate}
+\item As we know that $B$ is r.e., so $\chi_B(x)$ is computable. Define $f(x_1,x_2,\ldots,x_n)=2^{x_1}3^{x_2}\ldots p_n^{x_n}$, then \\ $\chi_M(x_1,x_2,\ldots,x_n)=\chi_B(f(x_1,x_2,\ldots,x_n))$. By substitution, $\chi_M$ is computable, so $M$ is partially decidable.
+\item 
+\end{enumerate}
+\end{solution}
+\end{enumerate}
+
+\end{document}
