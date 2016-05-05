@@ -1,0 +1,79 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amsthm,amssymb,bm}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+%\usepackage{float}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}[section]
+\newtheorem*{solution}{Solution}
+\theoremstyle{definition}
+
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab09-Recursively Enumerable Set(2)}}\vspace{1mm}\\
+CS363-Computability Theory, Xiaofeng Gao, Spring 2016}}
+\begin{center}
+\footnotesize{\color{red}$*$ Please upload your assignment to FTP or submit a paper version on the next class}
+
+\footnotesize{\color{red}$*$ If there is any problem, please contact: steinsgate@sjtu.edu.cn}
+
+\footnotesize{\color{blue}$*$ Name:\_\_\_\_\_\_\_\_ \quad StudentId: \_\_\_\_\_\_\_\_ \quad Email: \_\_\_\_\_\_\_\_}
+\end{center}
+
+\begin{enumerate}
+\item Suppose $A$ is an r.e.~set. Prove the following statements.
+\begin{enumerate}
+\item Show that the sets $\bigcup\limits_{x\in A}W_x$ and $\bigcup\limits_{x\in A}E_x$ are both r.e.
+\item Show that $\bigcap\limits_{x\in A}W_x$ is not necessarily r.e. (\emph{Hint}: $\forall t \in \mathbb{N}$ let $K_t=\{x:P_x(x)\downarrow \mbox{ in t steps}\}$. Show that for any $t$, $K_t$ is recursive; moreover $K=\bigcup\limits_{t\in\mathbb{N}}K_t$ and $\overline{K}=\bigcup\limits_{t\in\mathbb{N}}\overline{K}_t$.)
+\end{enumerate}
+
+\item Prove that $A\subseteq\mathbb{N}^n$ is r.e.~iff $A=\varnothing$ or there is a total computable function $f:\mathbb{N}\rightarrow\mathbb{N}^n$ such that $A=Ran(\bm{f})$. (A \emph{computable function} $\bm{f}$ from $\mathbb{N}$ to $\mathbb{N}^n$ is an $n$-tuple $\bm{f}=(f_1,\ldots,f_n)$ where each $f_i$ is a unary computable function and $\bm{f}(x)=(f_1(x),\ldots,f_n(x))$.)
+
+\item Suppose that $f$ is a total computable function, $A$ is a recursive set and $B$ is an r.e.set. Show that $f^{-1}(A)$ is recursive and that $f(A)$, $f(B)$ and $f^{-1}(B)$ are r.e. but not necessarily recursive. What extra information about these sets can be obtained if $f$ is a bijection?
+
+\item A set $D$ is the difference of r.e. sets (\emph{d.r.e.}) iff $D=A-B$ where $A,B$ are both \emph{r.e.}.
+\begin{enumerate}
+\item Show that the set of all \emph{d.r.e.} sets is closed under the formation of intersection.
+\item Show that if $C_n = \{x \mid |W_x|=n \}$, then $C_n$ is \emph{d.r.e.} for all $n \ge 0$.
+\end{enumerate}
+
+
+
+\end{enumerate}
+
+\end{document}
