@@ -37,7 +37,6 @@ int init_module()
 		return -ENOMEM;
 	}
 
-
 	printk(KERN_INFO "/proc/%s created\n", proc_name);
 	return 0;	/* everything is ok */
 }
