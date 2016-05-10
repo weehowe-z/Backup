@@ -1,1 +1,0 @@
-On a high level, Quark processors for IoT provide low-power silicon for intelligent items, Davis said. The Intel Quark SE SoC.
