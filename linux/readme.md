@@ -18,3 +18,7 @@
  + “writeval addr val” will change an unsigned long size content in current process’s virtual address into val. Note module should write to identity mapping address of addr and verify it from userspace address addr.
 
 - All the print can be done with printk and check result with dmesg.
+
+Related instruction are included in `test.sh`
+
+For `write addr val` function, compile and run `test.c`, use `print` to print the current variable value, use `write xxx(int)` to change the value through physical address by writing to `/proc/mtest` 
