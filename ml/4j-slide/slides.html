@@ -1,0 +1,902 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>工科创4J</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>工科创4J</h1>
+					<p>
+						<small>成员 <a href="javascript:void(0)">沈键</a> / <a href="http://blog.delvin.xyz">朱文豪</a></small>
+					</p>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>1. 概述</h2>
+					</section>
+
+					<section>
+					<h2>1.1 问题概述</h2>
+					<p>
+						<span class="fragment">本次要解决的是一个专利分类最顶层 (SECTION 层) 的两类分类问题，它主要有以下几个特征:</span>
+						<ul>
+							<br/>
+							<li class="fragment">各类样本存在较为严重的不平衡</li>
+							<li class="fragment">多标号现象普遍存在, 标号具有层次化结构</li>
+							<li class="fragment">样本特征处于高维空间, 相对比较稀疏</li>
+						</ul>
+					</p>
+					</section>
+
+					<section>
+						<h2>1.2 实验环境</h2>
+						<ul>
+							<li>操作系统: Windows 10, Ubuntu 16.04</li>
+							<li>处理器: Intel Core i5 双核</li>
+							<li>内存: 4GB</li>
+						</ul>
+					</section>
+
+					<section>
+						<h2>1.3 分工</h2>
+						<table>
+							<thead>
+								<tr>
+									<th></th>
+									<th>1</th>
+									<th>2</th>
+									<th>3</th>
+									<th>4</th>
+									<th>5</th>
+									<th>6</th>
+									<th>7</th>
+									<th>R</th>
+									<th>S</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>沈键</td>
+									<td>√</td>
+									<td>√</td>
+									<td>√</td>
+									<td>√</td>
+									<td>√</td>
+									<td></td>
+									<td></td>
+									<td>√</td>
+									<td>√</td>
+								</tr>
+								<tr>
+									<td>朱文豪</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td>√</td>
+									<td>√</td>
+									<td>√</td>
+									<td>√</td>
+									<td>√</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>2. 实验过程</h2>
+					</section>
+
+					<section>
+						<h2>2.1 直接使用 LIBLINEAR 学习</h2>
+						</br>
+						<ul>
+							<li class="fragment highlight-current-blue">
+								样本集/测试集预处理
+							</li>
+							<li class="fragment highlight-current-blue">
+								训练 model
+							</li>
+							<li class="fragment highlight-current-blue">
+								计算指标并绘制曲线
+							</li>
+						</ul>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##预处理
+
+						读取样本集/测试集, 修改样本标号, 使其符合标准格式
+
+						[1/0 特征序号:特征值], 输出得到新的样本集/测试集。
+
+						```matlab
+						function DataPro(txt,txt1)
+
+						ftxt = fopen(txt,'r+');
+						ftxt1= fopen(txt1,'w+');
+
+						while feof(ftxt)==0
+						    tline=fgetl(ftxt);
+						    S = regexp(tline, '\s+', 'split');
+						    s1 = char(S(1));
+						    if s1(1)=='A'
+						        S(1)=cellstr('1');
+						    else
+						        S(1)=cellstr('0');
+						    end
+
+						    len=length(S);
+						    wline=[];
+						    for i=1:len
+						        if i<len
+						            wline=[wline,char(S(i)),' '];
+						        else
+						            wline=[wline,char(S(i))];
+						        end
+						    end
+						    fprintf(ftxt1,'%s\n',wline);
+
+						end
+
+						fclose(ftxt);
+						fclose(ftxt1);
+						```
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							##训练 model
+
+							根据样本集调用 train 函数得到 model
+
+							```matlab
+							%[trainY,trainX] = libsvmread('./train_new.txt');
+							%[testY, testX] = libsvmread('./test_new.txt');
+
+							load traindata
+							load testdata
+							model = train(trainY, trainX, '-c 1');
+							[maxlabel, accuracy, dec_values] = predict(testY, testX, model);
+							%save label_p1 maxlabel
+							```
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							##计算指标并绘制曲线
+
+							- 在 predict 中根据不同的阈值判断分类结果,并统计其中 TP/TN/FP/FN 的数量,计算 p, F1 等指标。
+
+							- 循环修改预测的阈值, 输出 TPR-FPR, 作出 ROC 曲线，由梯形面积近似计算 AUC。
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							##计算指标并绘制曲线
+
+							```matlab
+							load traindata
+							load testdata
+
+							testSize=length(testY);
+							threshold=[-8,-4,-2,-1,-0.5,0,0.5,1,2,4,8];
+							thresnum=length(threshold);
+							TPRarr=zeros(thresnum,1);
+							FPRarr=zeros(thresnum,1);
+
+							for j=1:thresnum
+							    model = train(trainY, trainX, '-c 1');
+							    [~, ~, dec_values] = predict(testY, testX, model);
+							    maxlabel=zeros(testSize,1);
+							    maxlabel(dec_values>=threshold(j))=1;
+							    TP=0;
+							    FN=0;
+							    FP=0;
+							    TN=0;
+							    for i=1:testSize
+							        if testY(i)==1&&maxlabel(i)==1
+							            TP=TP+1;
+							        else
+							            if testY(i)==1&&maxlabel(i)==0
+							                FN=FN+1;
+							            else
+							                if testY(i)==0&&maxlabel(i)==1
+							                    FP=FP+1;
+							                else
+							                    if testY(i)==0&&maxlabel(i)==0
+							                        TN=TN+1;
+							                    end
+							                end
+							            end
+							        end
+							    end
+							    p=TP/(TP+FP);
+							    r=TP/(TP+FN);
+							    TPR=TP/(TP+FN);
+							    FPR=FP/(FP+TN);
+							    TPRarr(j)=TPR;
+							    FPRarr(j)=FPR;
+							end
+
+							plot(FPRarr,TPRarr);
+							xlabel('False Positive Rate');
+							ylabel('True Positive Rate');
+							title('ROC curve');
+							auc=0;
+							for i=1:10
+							auc=auc+(FPRarr(i)-FPRarr(i+1))*(TPRarr(i)+TPRarr(i+1))/2;
+							end
+							auc
+
+							```
+						</script>
+					</section>
+
+					<section>
+						<h2>2.2 使用 MIN-MAX 模块化网络</h2>
+						</br>
+						<ul>
+							<li class="fragment highlight-current-blue">
+								预处理 随机划分子问题
+							</li>
+							<li class="fragment highlight-current-blue">
+								使用最小最大模块化网络训练
+							</li>
+							<li class="fragment highlight-current-blue">
+								通过多处理器实现并行学习
+							</li>
+							<li>
+								计算指标并绘制曲线
+							</li>
+						</ul>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##划分子问题 - 随机
+
+						- 将样本随机打乱后按正负类分成两组, 在正类中分为 m 组, 在负类中分为 n 组, 一共生成 m*n 个 model
+
+						- 对于 m 和 n 的取值,我们做了一些选择(有 3/8, 4/4, 4/6 等)并比较最后结果发现差别不大, 最终采用了 4/4 来记录之后的数据。
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##采用Min-Max网络训练
+
+						- 对于每个测试样本,用每个子模块进行预测,对同一个 MIN 模块内所有子模块生成的预测值取最小, 作为该 MIN 模块的预测值。再对所有 MIN 模块的预测值取最大, 得到最终预测值。
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##采用Min-Max网络训练
+
+						```matlab
+						predict_label = zeros(testSize,modelnum);
+						for i=1:modelnum
+						    [predict_label(:,i), ~, dec_values] = predict(testY, testX, model{i});
+						end
+						minlabel=ones(testSize,posnum);
+						for i=1:posnum
+						    beginc=negnum*(i-1)+1;
+						    endc=negnum*i;
+						    for k=beginc:endc
+						        minlabel(:,i)=predict_label(:,k)&minlabel(:,i);
+						    end
+						end
+						maxlabel=zeros(testSize,1);
+						for i=1:posnum
+						    maxlabel=maxlabel | minlabel(:,i);
+						end
+						```
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##通过多处理器实现并行学习
+
+						- 并行计算前需要先开启并行计算池，结束后关闭
+
+						- 通过 parfor 关键字将循环分解为独立的部分，由多个 worker 并行执行
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##通过多处理器实现并行学习
+
+						```
+						parpool('local',2);
+						tic
+						model = cell(modelnum,1);
+						for i=1:modelnum
+						    x=ceil(i/negnum);
+						    y=mod(i,negnum);
+						    if y==0
+						        y=negnum;
+						    end
+						    subY1=ones(posend(x)-posbegin(x)+1,1);
+						    subY2=zeros(negend(y)-negbegin(y)+1,1);
+						    subY=[subY1;subY2];
+						    subX1=pos(posbegin(x):posend(x),:);
+						    subX2=neg(negbegin(y):negend(y),:);
+						    subX=[subX1;subX2];
+						    model{i}=train(subY, subX, '-c 1');
+						end
+						toc
+						```
+
+						</script>
+					</section>
+
+					<section>
+						<h2>2.3 结合先验知识分割样本</h2>
+						</br>
+						<ul>
+							<li class="fragment highlight-current-blue">
+								预处理 结合先验知识分割样本
+							</li>
+							<li class="">
+								使用最小最大模块化网络训练
+							</li>
+							<li class="">
+								通过多处理器实现并行学习
+							</li>
+							<li class="">
+								计算指标并绘制曲线
+							</li>
+						</ul>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##划分子问题 - 基于先验知识
+
+						- 处理训练集，将样本的第二层标号分离出来并保存在一个 txt 文档中
+
+						- 读入该文档，创建或修改结构体，根据其 index 数组组合相应的子问题的正/负样本
+
+						- 子问题的总数为 15*(36+19+8)=945 个,即一共需要训练 945 个 model
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##划分子问题 - 基于先验知识
+
+						```matlab
+						function classPro(txt,txt1)
+
+						ftxt = fopen(txt,'r+');
+						ftxt1= fopen(txt1,'w+');
+
+						while feof(ftxt)==0
+						    tline=fgetl(ftxt);
+						    S = regexp(tline, '\s+', 'split');
+						    s1 = char(S(1));
+						    classarr=regexp(s1, ',', 'split');
+						    classlen=length(classarr);
+						    wline=[];
+						    classtell={};
+						    for i=1:classlen
+						        flag=0;
+						        ch1=char(classarr(i));
+						        tempcell=regexp(ch1, '/', 'split');
+						        targetclass=char(tempcell(1));
+						        targetclass=targetclass(1:3);
+						        if isempty(classtell)
+						            classtell=[classtell,targetclass];
+						        else
+						            for j=1:length(classtell)
+						                if strcmpi(char(classtell(j)),targetclass)
+						                    flag=1;
+						                else
+						                    classtell=[classtell,targetclass];
+						                end    
+						            end
+						        end
+						        if flag==0
+						            if isempty(wline)
+						                wline=[wline,targetclass];
+						            else
+						                wline=[wline,' ',targetclass];
+						            end
+						        end
+						    end
+						    fprintf(ftxt1,'%s\n',wline);
+						    
+						end
+
+						fclose(ftxt);
+						fclose(ftxt1);
+
+						```
+
+						</script>
+					</section>
+
+					<section>
+						<h2>2.4 实现 MLP 基分类器</h2>
+						</br>
+						<ul>
+							<li>
+								预处理 随机分割样本
+							</li>
+							<li>
+								使用最小最大模块化网络训练
+							</li>
+						</ul>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							##实现 MLP 基分类器
+
+							- MLP 采用 BP 算法，在实验中，我们采用了三层神经网络
+
+							- 若在规定学习轮数内得到的误差小于阈值,则停止学习, 否则将在超出学习轮数后马上终止学习
+
+							<img src="img/mlp.png"/>
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							##实现 MLP 基分类器
+
+							```c++
+							void calculateOutput(vector<double> &input,vector<double> &output)
+							{
+								int i,j;
+								//calculate the output of hidden layer
+								for (i=0;i<hiddenLayer->neuronNum;++i){
+									double inputSum=0;
+									//handle n dimensions
+									for (j=0;j<hiddenLayer->neurons[i].inputNum-1;++j){
+										inputSum+=hiddenLayer->neurons[i].weight[j]*input[j];
+									}
+									//handle n+1 dimension (bias)
+									inputSum+=hiddenLayer->neurons[i].weight[j]*BIAS;
+									//calcuate the activation
+									hiddenLayer->neurons[i].activation=Sigmod(inputSum);
+								}
+								//calculate the output of output layer;
+								for (i=0;i<outputLayer->neuronNum;++i){
+									double inputSum=0;
+									for (j=0;j<outputLayer->neurons[i].inputNum-1;++j){
+										inputSum+=outputLayer->neurons[i].weight[j]*hiddenLayer->neurons[j].activation;
+									}
+									inputSum+=outputLayer->neurons[i].weight[j]*BIAS;
+									//calculate activation
+									outputLayer->neurons[i].activation=Sigmod(inputSum);
+
+									//save the output 
+									output.push_back(outputLayer->neurons[i].activation);
+								}
+							}
+							void trainSingleEpoch(vector<vector<double> > &setIn,vector<vector<double> > &setOut)
+							{
+								int i,j,k;
+								double weightUpdate;
+								double err;
+								
+								errorSum=0;
+								for (i=0;i<(int)setIn.size();++i){
+									vector<double> vecOutputs;
+									//foward propagation
+									calculateOutput(setIn[i],vecOutputs);
+									//update the output layer weight
+									for (j=0;j<outputLayer->neuronNum;++j){
+										err=((double)setOut[i][j]-vecOutputs[j])*vecOutputs[j]*(1-vecOutputs[j]);
+										outputLayer->neurons[j].error=err;
+										errorSum+=((double)setOut[i][j]-vecOutputs[j])*((double)setOut[i][j]-vecOutputs[j]);
+										for (k=0;k<hiddenLayer->neuronNum;++k){
+											//calculate the weight to be updated        delta w=c(di-oi)oi(1-oi)xk
+											weightUpdate=err*learningRate*hiddenLayer->neurons[k].activation;
+											outputLayer->neurons[j].weight[k]+=weightUpdate;
+										}
+										//upadte the bias
+										weightUpdate=err*learningRate*BIAS;
+										outputLayer->neurons[j].weight[k]+=weightUpdate;
+									}
+									//upatde the hidden layer weight
+									for (j=0;j<hiddenLayer->neuronNum;++j){
+										err=0;
+										for (k=0;k<outputLayer->neuronNum;++k){
+											err+=outputLayer->neurons[k].error*outputLayer->neurons[k].weight[j];
+										}
+										err*=hiddenLayer->neurons[j].activation*(1-hiddenLayer->neurons[j].activation);
+										//update the input weight 
+										for (k=0;k<hiddenLayer->neurons[j].inputNum-1;++k){
+											weightUpdate=err*learningRate*setIn[i][k];
+											hiddenLayer->neurons[j].weight[k]+=weightUpdate;
+											//leave for add momentum
+										}
+										//update the bias
+										weightUpdate=err*learningRate*BIAS;
+										hiddenLayer->neurons[j].weight[k]+=weightUpdate;
+									}
+								}
+								epoch++;	
+							}
+							```
+						</script>
+					</section>
+
+					<section>
+						<h2>2.5 在集群上运行</h2>
+						</br>
+						<ul>
+							<li class="fragment highlight-current-blue">
+								部署 Spark 集群
+							</li>
+							<li>
+								样本集/测试集预处理
+							</li>
+							<li class="fragment highlight-current-blue">
+								通过 Spark LIBLINEAR 实现并行学习
+							</li>
+						</ul>
+					</section>
+
+
+
+					<section data-markdown>
+						<script type="text/template">
+						##部署 Spark 集群 
+
+						- 创建至少 3 个[容器](https://hub.tenxcloud.com/repos/sczyh30/docker_spark) 或 virtualbox [镜像](http://www.csie.ntu.edu.tw/~cjlin/libsvmtools/distributed-liblinear/spark/pineapple.ova)(本机)
+
+						- 配置每台机器的 hostname, 并修改 hosts （添加其他机器 hostname 和 ip）
+
+						- 选定一台机器作为 master, 添加其他机器为 slaves 到 /hadoop/conf/slaves 和 /spark/conf/slaves
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##通过 Spark LIBLINEAR 学习 
+
+						```
+						hadoop fs -put ~/train_new.txt train.txt
+						./spark-1.0.0-bin-hadoop1/sbin/start-all.sh
+						./spark-1.0.0-bin-hadoop1/bin/spark-shell --jars "/home/spongebob/spark-1.0.0-bin-hadoop1/spark-liblinear-1.95/spark-liblinear-1.95.jar"
+						```
+						```scala
+						scala> import tw.edu.ntu.csie.liblinear._
+						scala> val data = Utils.loadLibSVMData(sc, "hdfs://pineapple0:9000/user/spongebob/train.txt")
+						scala> val model = SparkLiblinear.train(data, "-c 1")
+						```
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##通过 Spark LIBLINEAR 学习 
+
+						![1](img/1.png)
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##通过 Spark LIBLINEAR 学习 
+
+						![2](img/2.png)
+
+						</script>
+					</section>					
+					<section>
+						<h2>2.6 使用深度学习框架 caffe</h2>
+						</br>
+						<ul>
+							<li class="fragment highlight-current-blue">
+								样本集/测试集预处理
+							</li>
+							<li class="fragment highlight-current-blue">
+								定义 solver 和 net
+							</li>
+							<li>
+								训练 model
+							</li>
+						</ul>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##预处理
+
+						- 由于样本特征是稀疏的,直接通过 svmread 读到的数据为 dict(字典)类型, 大部分特征为 0,需要将这些特征补全。
+
+						- 将 train 和 test 分别写入 h5 格式的文件
+
+						</script>
+					</section>
+
+
+					<section data-markdown>
+						<script type="text/template">
+						##预处理
+
+						```python
+						import numpy as np
+						import matplotlib.pyplot as plt
+						import os
+						os.chdir('..')
+
+						import sys
+						import h5py
+						import shutil
+						import tempfile
+
+						import sklearn
+						import sklearn.datasets
+						import sklearn.linear_model
+
+						import pandas as pd
+
+						from liblinearutil import *
+						from numpy import *
+						y, x = svm_read_problem('test_new.txt')
+
+						testsize=len(y)
+						print testsize
+						X=zeros([testsize,5000])
+						for i in range(testsize):
+							for k in x[i]:
+								X[i][k-1]=x[i][k]
+
+						Y=zeros(testsize);
+						for i in range(testsize):
+							Y[i]=y[i]
+
+						dirname = os.path.abspath('./examples/hdf5_classification/data')
+						if not os.path.exists(dirname):
+						    os.makedirs(dirname)
+
+						train_filename = os.path.join(dirname, 'train.h5')
+						test_filename = os.path.join(dirname, 'test.h5')
+
+						# HDF5DataLayer source should be a file containing a list of HDF5 filenames.
+						# To show this off, we'll list the same data file twice.
+						with h5py.File(train_filename, 'w') as f:
+						    f['data'] = X
+						    f['label'] = Y.astype(np.float32)
+						with open(os.path.join(dirname, 'train.txt'), 'w') as f:
+						    f.write(train_filename + '\n')
+						    f.write(train_filename + '\n')
+						    
+
+						# HDF5DataLayer source should be a file containing a list of HDF5 filenames.
+						# To show this off, we'll list the same data file twice.
+						with h5py.File(test_filename, 'w') as f:
+						    f['data'] = X
+						    f['label'] = Y.astype(np.float32)
+						with open(os.path.join(dirname, 'test.txt'), 'w') as f:
+						    f.write(test_filename + '\n')
+						    f.write(test_filename + '\n')
+						```
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##定义 solver 和 net
+
+						- solver 借鉴了 caffe-master/examples/hdf5-classification/solver.prototxt, 只是对其 learning rate 以及迭代次数等做了少许修改。
+						
+						- net 没有卷积层和池化层, 为简单的 2 个数据输入层、全连接层、softmax 层, 之后增加 ReLu (Rectified Linear Units) 层和全连接层, 使网络更深, 不断检验分类效果。
+
+						</script>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h2>3. 实验结果</h2>
+					</section>
+
+					<section>
+						<h2>3.1 预测精度及相关性能</h2>
+						<table>
+							<thead>
+								<tr>
+									<th>方法</th>
+									<th>子问题数</th>
+									<th>准确率</th>
+									<th>F1</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>liblinear direct train</td>
+									<td>1</td>
+									<td>96.49%</td>
+									<td>0.9261</td>
+								</tr>
+								<tr>
+									<td>liblinear random</td>
+									<td>16</td>
+									<td>96.49%</td>
+									<td>0.9261</td>
+								</tr>
+								<tr>
+									<td>liblinear priori knowledge</td>
+									<td>945</td>
+									<td>96.49%</td>
+									<td>0.9261</td>
+								</tr>
+								<tr>
+									<td>mlp</td>
+									<td>16</td>
+									<td>91.79%</td>
+									<td>0.8019</td>
+								</tr>
+								<tr>
+									<td>caffe</td>
+									<td>----</td>
+									<td>79.07%</td>
+									<td>----</td>
+								</tr>
+							</tbody>
+						</table>						
+					</section>
+
+					<section>
+						<h2>3.1 预测精度及相关性能</h2>
+						LIBLINEAR 直接学习即可以得到较高的精确度,进一步划分样本之后,受划分精度及样本子集之间平衡程度的影响, 分类的精度及 F1 值等性能并没有非常显著的提高。
+					</section>
+
+					<section>
+						<h2>3.2 F1 评价指标与 ROC 曲线</h2>
+						<img src="img/roc-xls.png">
+					</section>
+
+					<section>
+						<h2>3.2 F1 评价指标与 ROC 曲线</h2>
+						<img src="img/roc-img.png">
+					</section>
+
+					<section>
+						<h2>3.2 F1 评价指标与 ROC 曲线</h2>
+						由本次实验的 F1 值和 ROC 曲线可知,三种方法取得的分类效果在伯仲之间,都十分好。而基于先验知识分解子问题后用 MIN-MAX 预测的方法相对来说比较出色。
+					</section>
+
+					<section>
+						<h2>3.3 串并行时间分析</h2>
+						<table>
+							<thead>
+								<tr>
+									<th>方法</th>
+									<th>子问题数</th>
+									<th>训练时间/s</th>
+									<th>预测时间/s</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>随机分解串行</td>
+									<td>16</td>
+									<td>6.69</td>
+									<td>3.61</td>
+								</tr>
+								<tr>
+									<td>随机分解2处理器并行</td>
+									<td>16</td>
+									<td>12.23</td>
+									<td>5.18</td>
+								</tr>
+								<tr>
+									<td>随机分解串行</td>
+									<td>96</td>
+									<td>18</td>
+									<td>22.75</td>
+								</tr>							
+								<tr>
+									<td>随机分解2处理器并行</td>
+									<td>96</td>
+									<td>17.32</td>
+									<td>17.7</td>
+								</tr>
+								<tr>
+									<td>先验知识分解串行</td>
+									<td>945</td>
+									<td>33.63</td>
+									<td>234.14</td>
+								</tr>
+								<tr>
+									<td>先验知识分解2处理器并行</td>
+									<td>945</td>
+									<td>17.04</td>
+									<td>160.81</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+
+					<section>
+						<h2>3.3 串并行时间分析</h2>
+						通过观察，我们可以看出子问题数和串行时间的正相关关系，子问题数数越大，串行时间越长，这是符合我们预期的。并且我们发现在问题规模小的时候采取并行并没有取得减小运行时间的效果，这是因为本身使用多处理器并行就存在着额外开销，反而得不偿失。从并行加速比也可看出，如果不考虑数据传输等额外开销，通过服务器或者 GPU 实现全并行，可以达到极高的加速比。
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							##参考文献
+							
+							```shell
+							[1] Bao-Liang Lu, Masami Ito. Task Decomposition and Module Combination Based on Class Relations: A Modular Neural Network for Pattern Classification
+							[2] Bao-Liang Lu, Hajime Kita, Yoshikazu Nishikawa. Multi-sieving neural network architecture that decomposes learning tasks automatically
+							[3] Parallel learning of large-scale multi-label classification problems with min-max modular LIBLINEAR http://bcmi.sjtu.edu.cn/~blu/papers/2012/Parallel%20learning%20of%20largescale%20multilabel%20classification%20problems%20with%20minmax%20modular%20LIBLINEAR.PDF
+							[4] Roc: http://zh.wikipedia.org/wiki/ROC
+							[5] Large-scale Logistic Regression and Linear Support Vector Machines Using Spark, IEEE International Conference on Big Data 2014 http://www.csie.ntu.edu.tw/~cjlin/papers/spark-liblinear/spark-liblinear.pdf
+							[6] Caffe-logistic regression: http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/brewing-logreg.ipynb
+							```
+						</script>
+					</section>
+
+				</section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			Reveal.initialize({
+				history: true,
+				// transition: 'fadein',
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
