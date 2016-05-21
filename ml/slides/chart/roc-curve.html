@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <meta charset="utf-8">
+    <title>ROC curve</title>
+    <!-- 引入 ECharts 文件 -->
+    <script src="echarts.min.js"></script>
+    <!-- 引入 dark 主题 -->
+	<script src="dark.js"></script>
+</header>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 800px;height:600px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'),'dark');
+
+        // 指定图表的配置项和数据
+		var dataAll = [
+		    [
+		        [1, 1],
+		        [0.996124, 1],
+		        [0.71232, 0.999454],
+		        [0.191577, 0.990492],
+		        [0.061007, 0.966776],
+		        [0.017321, 0.90918],
+		        [0.005378, 0.804918],
+		        [0.001886, 0.679563],
+		        [0.00014, 0.381202],
+		        [0, 0.089836],
+		        [0, 0.000328]
+		    ],
+		    [
+		        [1, 1],
+		        [0.999965, 1],
+		        [0.866532, 0.999454],
+		        [0.274375, 0.994536],
+		        [0.085766, 0.975082],
+		        [0.02193, 0.912787],
+		        [0.005692, 0.804918],
+		        [0.001362, 0.60623],
+		        [0.00014, 0.231585],
+		        [0, 0.02306],
+		        [0, 0]
+		    ],
+		    [
+		        [1,1],
+		        [1,1],
+		        [0.968885,1],
+		        [0.295293,0.995082],
+		        [0.080144,0.977158],
+		        [0.016483,0.922186],
+		        [0.002898,0.782186],
+		        [0.000419,0.487322],
+		        [0,0.008743],
+		        [0,0],
+		        [0,0]
+		    ]
+		    
+		];
+
+		option = {
+		    title: {
+		        text: 'ROC CURVE',
+		        x: 0,
+		        y: 0
+		    },
+		    grid: [
+		        {x: '10%', y: '15%', width: '80%', height: '80%'}
+		    ],
+		    tooltip: {
+		        formatter: 'Group {a}: ({c})'
+		    },
+		    legend: {
+		        data:['Direct','Random','Priori knowledge']
+		    },
+		    toolbox: {
+		    show: true,
+		    feature: {
+		        saveAsImage: {show: true}
+		        }
+		    },
+		    xAxis: [
+		        {gridIndex: 0, min: 0, max: 1, name: 'FPR'}
+		    ],
+		    yAxis: [
+		        {gridIndex: 0, min: 0, max: 1, name: 'TPR'}
+		    ],
+		    series: [
+		        {
+		            name: 'Direct',
+		            type: 'line',
+		            smooth: true,
+		            xAxisIndex: [0],
+		            yAxisIndex: [0],
+		            data: dataAll[0],
+		        },
+		        {
+		            name: 'Random',
+		            type: 'line',
+		            smooth: true,
+		            xAxisIndex: [0],
+		            yAxisIndex: [0],
+		            data: dataAll[1]
+		        },
+		        {
+		            name: 'Priori knowledge',
+		            type: 'line',
+		            smooth: true,
+		            xAxisIndex: [0],
+		            yAxisIndex: [0],
+		            data: dataAll[2]
+		        }
+		    ]
+		};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+</html>
