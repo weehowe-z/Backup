@@ -567,74 +567,10 @@
 						</script>
 					</section>
 
-					<section>
-						<h2>2.5 在集群上运行</h2>
-						</br>
-						<ul>
-							<li class="fragment highlight-current-blue">
-								部署 Spark 集群
-							</li>
-							<li>
-								样本集/测试集预处理
-							</li>
-							<li class="fragment highlight-current-blue">
-								通过 Spark LIBLINEAR 实现并行学习
-							</li>
-						</ul>
-					</section>
-
-
-
-					<section data-markdown>
-						<script type="text/template">
-						##部署 Spark 集群 
-
-						- 创建至少 3 个[容器](https://hub.tenxcloud.com/repos/sczyh30/docker_spark) 或 virtualbox [镜像](http://www.csie.ntu.edu.tw/~cjlin/libsvmtools/distributed-liblinear/spark/pineapple.ova)(本机)
-
-						- 配置每台机器的 hostname, 并修改 hosts （添加其他机器 hostname 和 ip）
-
-						- 选定一台机器作为 master, 添加其他机器为 slaves 到 /hadoop/conf/slaves 和 /spark/conf/slaves
-
-						</script>
-					</section>
-
-					<section data-markdown>
-						<script type="text/template">
-						##通过 Spark LIBLINEAR 学习 
-
-						```
-						hadoop fs -put ~/train_new.txt train.txt
-						./spark-1.0.0-bin-hadoop1/sbin/start-all.sh
-						./spark-1.0.0-bin-hadoop1/bin/spark-shell --jars "/home/spongebob/spark-1.0.0-bin-hadoop1/spark-liblinear-1.95/spark-liblinear-1.95.jar"
-						```
-						```scala
-						scala> import tw.edu.ntu.csie.liblinear._
-						scala> val data = Utils.loadLibSVMData(sc, "hdfs://pineapple0:9000/user/spongebob/train.txt")
-						scala> val model = SparkLiblinear.train(data, "-c 1")
-						```
-
-						</script>
-					</section>
-
-					<section data-markdown>
-						<script type="text/template">
-						##通过 Spark LIBLINEAR 学习 
-
-						![1](img/1.png)
-
-						</script>
-					</section>
-
-					<section data-markdown>
-						<script type="text/template">
-						##通过 Spark LIBLINEAR 学习 
-
-						![2](img/2.png)
-
 						</script>
 					</section>					
 					<section>
-						<h2>2.6 使用深度学习框架 caffe</h2>
+						<h2>2.5 使用深度学习框架 caffe</h2>
 						</br>
 						<ul>
 							<li class="fragment highlight-current-blue">
@@ -737,6 +673,72 @@
 
 						</script>
 					</section>
+
+					<section>
+						<h2>2.6 在集群上运行</h2>
+						</br>
+						<ul>
+							<li class="fragment highlight-current-blue">
+								部署 Spark 集群
+							</li>
+							<li>
+								样本集/测试集预处理
+							</li>
+							<li class="fragment highlight-current-blue">
+								通过 Spark LIBLINEAR 实现并行学习
+							</li>
+						</ul>
+					</section>
+
+
+
+					<section data-markdown>
+						<script type="text/template">
+						##部署 Spark 集群 
+
+						- 创建至少 3 个[容器](https://hub.tenxcloud.com/repos/sczyh30/docker_spark) 或 virtualbox [镜像](http://www.csie.ntu.edu.tw/~cjlin/libsvmtools/distributed-liblinear/spark/pineapple.ova)(本机)
+
+						- 配置每台机器的 hostname, 并修改 hosts （添加其他机器 hostname 和 ip）
+
+						- 选定一台机器作为 master, 添加其他机器为 slaves 到 /hadoop/conf/slaves 和 /spark/conf/slaves
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##通过 Spark LIBLINEAR 学习 
+
+						```
+						hadoop fs -put ~/train_new.txt train.txt
+						./spark-1.0.0-bin-hadoop1/sbin/start-all.sh
+						./spark-1.0.0-bin-hadoop1/bin/spark-shell --jars "/home/spongebob/spark-1.0.0-bin-hadoop1/spark-liblinear-1.95/spark-liblinear-1.95.jar"
+						```
+						```scala
+						scala> import tw.edu.ntu.csie.liblinear._
+						scala> val data = Utils.loadLibSVMData(sc, "hdfs://pineapple0:9000/user/spongebob/train.txt")
+						scala> val model = SparkLiblinear.train(data, "-c 1")
+						```
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##通过 Spark LIBLINEAR 学习 
+
+						![1](img/1.png)
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+						##通过 Spark LIBLINEAR 学习 
+
+						![2](img/2.png)
+
+
 
 				</section>
 
