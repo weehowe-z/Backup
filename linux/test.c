@@ -3,7 +3,6 @@
 
 int main()
 {
-	int n = 0;
 	int i = 0;
 	int v = 0;
 	char s[100];
@@ -14,7 +13,7 @@ int main()
 	while(true){
 
 		mtest = fopen("/proc/mtest", "w+");
-		
+
 		fgets(s, 80, stdin);
 
 		if(memcmp(s, "exit", 4) == 0) break;
@@ -30,7 +29,7 @@ int main()
 
 		else if(memcmp(s, "write", 5) == 0){
 			sscanf(s, "write %d", &i);
-			printf("Excute writeval 0x%lx %d\n", (unsigned long)(void*)&v, (unsigned long)i);
+			printf("Excute writeval 0x%lx %d\n", (unsigned long)(void*)&v, i);
 		  fprintf(mtest, "writeval 0x%lx %lx\n", (unsigned long)(void*)&v, (unsigned long)i);
 		}
 

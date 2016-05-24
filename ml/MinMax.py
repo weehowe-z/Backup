@@ -5,7 +5,6 @@ import numpy
 import matplotlib.pyplot as plt
 
 
-
 # 生成区间[a, b)内的随机数
 def rand(a, b):
     return (b - a) * random.random() + a
@@ -20,10 +19,11 @@ def makeMatrix(I, J, fill=0.0):
 
 
 def sigmoid(x):
-    return 1/(1+numpy.exp(-x))
+    return 1 / (1 + numpy.exp(-x))
+
 
 def dsigmoid(y):
-    return y*(1-y)
+    return y * (1 - y)
 
 
 class NN:
@@ -134,7 +134,7 @@ class NN:
         for j in range(self.nh):
             print(self.wo[j])
 
-    def train(self, patterns, maxEpoch=10000, minError = 0.05, N=0.05, M=0.1):
+    def train(self, patterns, maxEpoch=10000, minError=0.05, N=0.05, M=0.1):
         # N: 学习速率(learning rate)
         # M: 动量因子(momentum factor)
         for i in range(maxEpoch):
@@ -144,31 +144,34 @@ class NN:
                 targets = [p[2]]
                 self.update(inputs)
                 error = error + self.backPropagate(targets, N, M)
-           	# if (error <= 0.05):
-           	# 	print "Convergence"
-           	# 	break
-            if  i%200 == 0:
+                # if (error <= 0.05):
+                # 	print "Convergence"
+                # 	break
+            if i % 200 == 0:
                 print 'Epoch' + str(i) + (' ErrorSum %-.5f' % error)
 
-def divide(set):
-	random.shuffle(set)
-	result = [[],[],[],[]]
-	for i in xrange(0,len(set)):
-		result[i%4].append(set[i])
-	return result
 
-def combine(set1,set2):
+def divide(set):
+    random.shuffle(set)
+    result = [[], [], [], []]
+    for i in xrange(0, len(set)):
+        result[i % 4].append(set[i])
+    return result
+
+
+def combine(set1, set2):
     result = []
     for whiteSet in set1:
         for blackSet in set2:
-            result.append( whiteSet + blackSet )
+            result.append(whiteSet + blackSet)
     return result
 
+
 def arrange(set):
-    whiteSet=[]
-    blackSet=[]
+    whiteSet = []
+    blackSet = []
     for data in set:
-        if data[2]==1.0:
+        if data[2] == 1.0:
             whiteSet.append(data)
         else:
             blackSet.append(data)
@@ -176,85 +179,83 @@ def arrange(set):
     whiteSets = divide(whiteSet)
     blackSets = divide(blackSet)
 
-    return combine(whiteSets,blackSets)
+    return combine(whiteSets, blackSets)
+
 
 def MinMaxNN():
 
-	rawSet = numpy.loadtxt("two_spiral_train.txt")
-	resultSets = arrange(rawSet)
+    rawSet = numpy.loadtxt("two_spiral_train.txt")
+    resultSets = arrange(rawSet)
 
+    networks = []
+    for i in xrange(0, 16):
+        print "now deal with network " + str(i)
+        network = NN(2, 20, 1)
+        network.train(resultSets[i])
+        networks.append(network)
 
-	networks = []
-	for i in xrange(0,16):
-		print "now deal with network " + str(i)
-		network = NN(2,20,1)
-		network.train(resultSets[i])
-		networks.append(network)
-
-
-	xset_black_semi =[[],[],[],[]]
-	yset_black_semi = [[],[],[],[]]
-	xset_black_final = []
-	yset_black_final = []
+    xset_black_semi = [[], [], [], []]
+    yset_black_semi = [[], [], [], []]
+    xset_black_final = []
+    yset_black_final = []
 
 
 #    Just for save the ram
 
-	for p in xrange(0,16):
-		yset_black = []
-		xset_black = []
-		for x in xrange(-100,101):
-			line = []
-			for y in xrange(-100,101):
-				pos = [x / 200.0 * 8, y / 200.0 * 8]
-				output = networks[p].update(pos)[0]
-				if (output>=0.5):
-					xset_black.append(x)
-					yset_black.append(y)
-		plt.scatter(xset_black,yset_black,color='0')
-		plt.savefig('figure'+str(p)+'.jpg')
-		plt.close('all')	
+    for p in xrange(0, 16):
+        yset_black = []
+        xset_black = []
+        for x in xrange(-100, 101):
+            line = []
+            for y in xrange(-100, 101):
+                pos = [x / 200.0 * 8, y / 200.0 * 8]
+                output = networks[p].update(pos)[0]
+                if (output >= 0.5):
+                    xset_black.append(x)
+                    yset_black.append(y)
+        plt.scatter(xset_black, yset_black, color='0')
+        plt.savefig('figure' + str(p) + '.jpg')
+        plt.close('all')
 
+    for x in xrange(-100, 101):
+        line = []
+        for y in xrange(-100, 101):
+            pos = [x / 200.0 * 8, y / 200.0 * 8]
+            output_temp = []
+            for network in networks:
+                output = network.update(pos)[0]
+                output_temp.append(output)
+            out1 = min(output_temp[0:3])
+            out2 = min(output_temp[4:7])
+            out3 = min(output_temp[8:11])
+            out4 = min(output_temp[12:15])
+            '''out = max(min(output_temp[0:3]),min(output_temp[4:7]),
+                min(output_temp[8:11]),min(output_temp[12:15])) '''
+            out = max(out1, out2, out3, out4)
+            if (out >= 0.5):
+                xset_black_final.append(x)
+                yset_black_final.append(y)
+            if (out1 >= 0.5):
+                xset_black_semi[0].append(x)
+                yset_black_semi[0].append(y)
+            if (out2 >= 0.5):
+                xset_black_semi[1].append(x)
+                yset_black_semi[1].append(y)
+            if (out3 >= 0.5):
+                xset_black_semi[2].append(x)
+                yset_black_semi[2].append(y)
+            if (out4 >= 0.5):
+                xset_black_semi[3].append(x)
+                yset_black_semi[3].append(y)
 
-	for x in xrange(-100,101):
-		line = []
-		for y in xrange(-100,101):
-			pos = [x / 200.0 * 8, y / 200.0 * 8]
-			output_temp = []
-			for network in networks:
-				output = network.update(pos)[0]
-				output_temp.append(output)
-			out1 = min(output_temp[0:3])
-			out2 = min(output_temp[4:7])
-			out3 = min(output_temp[8:11])
-			out4 = min(output_temp[12:15])
-			# out = max(min(output_temp[0:3]),min(output_temp[4:7]),min(output_temp[8:11]),min(output_temp[12:15]))
-			out = max (out1,out2,out3,out4)
-			if (out>=0.5):
-				xset_black_final.append(x)
-				yset_black_final.append(y)
-			if (out1>=0.5):
-				xset_black_semi[0].append(x)
-				yset_black_semi[0].append(y)
-			if (out2>=0.5):
-				xset_black_semi[1].append(x)
-				yset_black_semi[1].append(y)
-			if (out3>=0.5):
-				xset_black_semi[2].append(x)
-				yset_black_semi[2].append(y)
-			if (out4>=0.5):
-				xset_black_semi[3].append(x)
-				yset_black_semi[3].append(y)
+    for i in xrange(0, 4):
+        plt.scatter(xset_black_semi[i], yset_black_semi[i], color='0')
+        plt.savefig('figure-semi' + str(i) + '.jpg')
+        plt.close('all')
 
-	for i in xrange(0,4):
-		plt.scatter(xset_black_semi[i],yset_black_semi[i],color='0')
-		plt.savefig('figure-semi'+ str(i) + '.jpg')
-		plt.close('all')
-
-
-	plt.scatter(xset_black_final,yset_black_final,color='0')
-	plt.savefig('figure-final.jpg')
-	plt.close('all')
+    plt.scatter(xset_black_final, yset_black_final, color='0')
+    plt.savefig('figure-final.jpg')
+    plt.close('all')
 
 
 if __name__ == '__main__':
