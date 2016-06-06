@@ -32,9 +32,7 @@ shittyfiles = [
     '~/.bazaar/',           # bzr insists on creating files holding default values
     '~/.bzr.log',
     '~/.nv/',
-    # configured to be moved to ~/.cache/vim/viminfo, but it is still
-    # sometimes created...
-    '~/.viminfo',
+    '~/.viminfo',           # configured to be moved to ~/.cache/vim/viminfo, but it is still sometimes created...
     '~/.npm/',              # npm cache
 ]
 
