@@ -1,0 +1,16 @@
+Process	elapsed_time	page_fault
+P1	2.72517		100
+P2	8.40376		100
+P3	8.29001		100
+P4	8.46264		100
+P5	10.6509		100
+P6	10.772		100
+P7	12.373		100
+P8	12.6216		100
+P10	13.2482		100
+P9	14.623		100
+
+Total time: 22.103
+Total cycle: 2210299
+Total idle cycle: 918299
+Total page faults: 1000

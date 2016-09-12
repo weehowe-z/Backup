@@ -1,2 +1,10 @@
-*.txt
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+# My configurations:
 *.o
