@@ -5,13 +5,13 @@ using namespace std;
 class Solution {
 public:
     bool canWinNim(int n) {
-        if ( n%4 == 0) return false;
-        else return true;
+            if ( n%4 == 0) return false;
+            else return true;
     }
 };
 
 int main()
 {
-    Solution s;
-    cout<<s.canWinNim(5)<<endl;
+        Solution s;
+        cout<<s.canWinNim(5)<<endl;
 }
