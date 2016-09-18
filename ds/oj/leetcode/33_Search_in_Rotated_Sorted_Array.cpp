@@ -9,6 +9,17 @@ using namespace std;
 class Solution
 {
 public:
+    int binarySearch(vector<int>& nums, int target)
+    {
+        int left = 0;
+        int right = nums.size()-1;
+        while (left != right){
+            int mid = (left+right)/2;
+
+        }
+    }
+
+
     int search(vector<int>& nums, int target)
     {
         sort(nums.begin(),nums.end());
