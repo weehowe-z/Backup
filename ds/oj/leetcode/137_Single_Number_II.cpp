@@ -30,6 +30,6 @@ int main()
     Solution s;
     vector<int> x = {1,1,1,2,3,3,3,2,2,5,5,4,5};
     //cout<<sizeof(int)<<endl;
-    cout<<s.singleNumber(x);
+    cout<<s.singleNumber(x)<<endl;
     return 0;
 }

@@ -8,3 +8,8 @@ build
 
 # My configurations:
 *.o
+*.project
+*.workspace
+*.mk
+**/Debug/*
+**/.codelite
