@@ -15,9 +15,19 @@ struct TreeNode {
 class Solution {
     public:
     vector<int> postorderTraversal(TreeNode* root) {
-        stack<TreeNode*> stk;
         vector<int> vec;
-
+        
+        if (root == nullptr){
+            return vec;
+        }
+        vector<int> vec2;
+        
+        vec2 = postorderTraversal(root->left);
+        if (!vec2.empty()) vec.insert(vec.end(),vec2.begin(),vec2.end());
+        vec2 = postorderTraversal(root -> right);
+        if (!vec2.empty()) vec.insert(vec.end(),vec2.begin(),vec2.end());
+        vec.push_back(root->val);
+        return vec;
     }
 };
 
