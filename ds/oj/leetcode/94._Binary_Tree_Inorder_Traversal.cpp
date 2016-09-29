@@ -13,29 +13,26 @@ using namespace std;
 
 class Solution {
 public:
-    //Recursive solution
-    /**
-    vector<int> inorderTraversal(TreeNode* root) {
-        vector<int> vec;
-        if (root == NULL){
-            return vec;
-        }
-        else {
-            vector<int> vecSub = inorderTraversal(root->left);
-            if (vecSub.size() != 0){
-               vec.insert(vec.end(),vecSub.begin(),vecSub.end());
-            }
-            vec.push_back(root->val);
-            vecSub = inorderTraversal(root->right);
-             if (vecSub.size() != 0){
-               vec.insert(vec.end(),vecSub.begin(),vecSub.end());
-            }
-            return vec;
-        }
-    }
-    **/
+//Recursive solution
+//    vector<int> inorderTraversal(TreeNode* root) {
+//        vector<int> vec;
+//        if (root == NULL){
+//            return vec;
+//        }
+//        else {
+//            vector<int> vecSub = inorderTraversal(root->left);
+//            if (vecSub.size() != 0){
+//               vec.insert(vec.end(),vecSub.begin(),vecSub.end());
+//            }
+//            vec.push_back(root->val);
+//            vecSub = inorderTraversal(root->right);
+//             if (vecSub.size() != 0){
+//               vec.insert(vec.end(),vecSub.begin(),vecSub.end());
+//            }
+//            return vec;
+//        }
+//    }
 
-//
     vector<int> inorderTraversal(TreeNode* root) {
         vector<int> vec;
         stack<TreeNode*> stk;
