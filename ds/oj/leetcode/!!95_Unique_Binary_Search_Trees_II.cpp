@@ -1,12 +1,5 @@
 #include <iostream>
-#include <vector>
-#include <stack>
-#include <queue>
-#include <algorithm>
 #include <unordered_map>
-#include <map>
-#include <climits>
-
 using namespace std;
 
 struct TreeNode {
@@ -16,13 +9,11 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-
 class Solution {
-
+public:
+    vector<TreeNode*> generateTrees(int n) {
+        
+    }
+    
+    void generate()
 };
-
-int main()
-{
-    Solution s;
-    return 0;
-}
