@@ -1,11 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <stack>
-#include <queue>
-#include <algorithm>
-#include <unordered_map>
-#include <map>
-#include <climits>
 
 using namespace std;
 
@@ -14,15 +9,11 @@ struct TreeNode {
     TreeNode *left;
     TreeNode *right;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-
-
+ };
+ 
 class Solution {
-
+public:
+    int maxPathSum(TreeNode* root) {
+        return max(max(maxPathSum(root->left), maxPathSum(root->right)),0);
+    }
 };
-
-int main()
-{
-    Solution s;
-    return 0;
-}
