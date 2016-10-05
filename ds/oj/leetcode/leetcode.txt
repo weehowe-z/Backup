@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-./Debug/110_Balanced_Binary_Tree.cpp.o
-=======
-./Debug/120_Triangle.cpp.o
->>>>>>> origin/leetcode-ex
+./Debug/53_Maximum_Subarray.cpp.o
