@@ -1,1 +1,0 @@
-./Debug/131_Palindrome_Partitioning.cpp.o
