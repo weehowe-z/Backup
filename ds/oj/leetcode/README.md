@@ -2,6 +2,6 @@
 
 ---
 
-Actually, I don't like doing exercises like this, but I have to..
+Actually, I don't like doing exercises like this..
 
-My profile => [Profile](https://leetcode.com/weehowe_z/)
+Leetcode profile => [Profile](https://leetcode.com/weehowe_z/)
