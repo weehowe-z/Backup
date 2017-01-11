@@ -1,3 +1,3 @@
 # Backup
 
-Other projects / code
+Other projects / scripts / settings
